@@ -16,6 +16,7 @@ defmodule Game.Router do
   scope "/", Game do
     pipe_through :browser # Use the default browser stack
 
+    resources "/worlds", WorldController
     get "/", PageController, :index
   end
 

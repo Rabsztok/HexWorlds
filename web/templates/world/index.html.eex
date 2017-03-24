@@ -1,0 +1,26 @@
+<h2>Listing worlds</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for world <- @worlds do %>
+    <tr>
+      <td><%= world.name %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: world_path(@conn, :show, world), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: world_path(@conn, :edit, world), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: world_path(@conn, :delete, world), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New world", to: world_path(@conn, :new) %>

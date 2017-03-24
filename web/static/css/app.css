@@ -1,1 +1,17 @@
 /* This file is for your main application css. */
+
+.canvas {
+    border: 1px solid black;
+}
+
+.instructions {
+    font-weight: bold;
+    color: red;
+}
+
+.messages {
+    height: 270px;
+    width: 250px;
+    overflow: scroll;
+    border: 1px solid black;
+}

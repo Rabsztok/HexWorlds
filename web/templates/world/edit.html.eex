@@ -1,0 +1,6 @@
+<h2>Edit world</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: world_path(@conn, :update, @world) %>
+
+<%= link "Back", to: world_path(@conn, :index) %>

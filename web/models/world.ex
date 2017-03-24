@@ -1,0 +1,22 @@
+defmodule Game.World do
+  use Game.Web, :model
+
+  schema "worlds" do
+    field :name, :string
+
+    timestamps()
+  end
+
+  @doc """
+  Builds a changeset based on the `struct` and `params`.
+  """
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:name])
+    |> validate_required([:name])
+  end
+
+  def random_coordinate do
+    :crypto.rand_uniform(-100, 100)
+  end
+end
