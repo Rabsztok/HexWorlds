@@ -1,6 +1,7 @@
 defmodule Game.World do
   use Game.Web, :model
 
+  @derive {Poison.Encoder, only: [:id, :name]}
   schema "worlds" do
     field :name, :string
 

@@ -2,7 +2,8 @@ defmodule Game.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", Game.RoomChannel
+  channel "worlds:*", Game.WorldChannel
+  channel "world:*", Game.WorldChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
