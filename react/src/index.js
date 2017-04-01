@@ -1,5 +1,6 @@
 const $ = require('jquery');
 window.$ = window.jQuery = $;
+
 require('styles/index.scss');
 require('bootstrap-sass/assets/javascripts/bootstrap.js');
 

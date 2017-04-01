@@ -5,13 +5,12 @@ defmodule Game.Repo.Migrations.CreateTile do
     TileTypeEnum.create_type
 
     create table(:tiles) do
-      add :x, :bigint
-      add :y, :bigint
-      add :z, :bigint
+      add :q, :bigint
+      add :r, :bigint
       add :type, :tile_type
     end
 
-    create unique_index(:tiles, [:x, :y, :z], name: :coordinates_index)
+    create unique_index(:tiles, [:q, :r], name: :coordinates_index)
   end
 
   def down do

@@ -2,9 +2,8 @@ defmodule Game.Tile do
   use Game.Web, :model
 
   schema "tiles" do
-    field :x, :integer
-    field :y, :integer
-    field :z, :integer
+    field :q, :integer
+    field :r, :integer
     field :type, TileTypeEnum
   end
 
@@ -13,9 +12,9 @@ defmodule Game.Tile do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:x, :y, :z])
+    |> cast(params, [:q, :r])
     |> unique_constraint(:coordinates, name: :coordinates_index)
-    |> validate_required([:x, :y, :z])
+    |> validate_required([:q, :r])
   end
 
   def random_tile do

@@ -43,7 +43,7 @@
     "webpack-dev-server": "^2.4.2"
   },
   "dependencies": {
-    "phoenix-socket": "^1.1.3",
+    "@ecliptic/react-art": "^0.15.4-fork.1",
     "axios": "^0.15.3",
     "babel-plugin-transform-runtime": "^6.23.0",
     "bootstrap-sass": "^3.3.7",
@@ -57,11 +57,14 @@
     "mobx-react": "^4.1.0",
     "mobx-react-devtools": "^4.2.11",
     "mobx-react-form": "^1.20.5",
-    "react": "^15.1.0",
+    "phoenix-socket": "^1.1.3",
+    "react": "^15.4.2",
     "react-bootstrap": "^0.30.8",
-    "react-dom": "^15.1.0",
+    "react-dom": "^15.4.2",
     "react-router": "^4.0.0",
     "react-router-dom": "^4.0.0",
+    "react-three": "^0.9.7",
+    "three": "^0.83.0",
     "validatorjs": "^3.11.0"
   }
 }

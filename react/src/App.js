@@ -2,19 +2,9 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { observer } from 'mobx-react'
 
-import worldStore from 'stores/world_store'
-import WorldList from 'components/world_list'
-
-const Landing = () => (
-    <div>
-      <div className="jumbotron">
-        <h2>Hello, welcome to BRC app</h2>
-        <p>There isn't much here just yet, please come back later!</p>
-      </div>
-
-      <WorldList worldStore={worldStore}/>
-    </div>
-);
+import WorldPage from 'pages/WorldPage'
+import WorldIndex from 'pages/WorldIndex'
+import Navigation from "./components/Navigation";
 
 const NotFound = () => (
     <div className="jumbotron text-center">
@@ -29,9 +19,12 @@ class App extends React.Component {
     return (
         <Router>
           <div>
+            <Navigation/>
+
             <div className="container">
               <Switch>
-                <Route exact path="/" component={Landing}/>
+                <Route exact path="/" component={WorldIndex}/>
+                <Route path={`/world/:topicId`} component={WorldPage}/>
                 <Route component={NotFound}/>
               </Switch>
             </div>
