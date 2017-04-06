@@ -1,6 +1,6 @@
 import {Socket} from 'phoenix-socket';
 
-let socket = new Socket('ws://192.168.99.100:4000/socket', { params: { token: window.userToken } });
+let socket = new Socket('ws://localhost:4000/socket', { params: { token: window.userToken } });
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,

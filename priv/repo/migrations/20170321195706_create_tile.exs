@@ -7,6 +7,7 @@ defmodule Game.Repo.Migrations.CreateTile do
     create table(:tiles) do
       add :q, :bigint
       add :r, :bigint
+      add :height, :integer
       add :type, :tile_type
     end
 

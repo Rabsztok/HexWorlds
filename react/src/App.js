@@ -4,7 +4,7 @@ import { observer } from 'mobx-react'
 
 import WorldPage from 'pages/WorldPage'
 import WorldIndex from 'pages/WorldIndex'
-import Navigation from "./components/Navigation";
+import Navigation from 'components/Navigation';
 
 const NotFound = () => (
     <div className="jumbotron text-center">

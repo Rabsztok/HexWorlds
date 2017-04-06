@@ -63,8 +63,9 @@
     "react-dom": "^15.4.2",
     "react-router": "^4.0.0",
     "react-router-dom": "^4.0.0",
-    "react-three": "^0.9.7",
-    "three": "^0.83.0",
+    "react-three-renderer": "^3.0.2",
+    "three": "^0.82.1",
+    "three-orbit-controls": "^82.1.0",
     "validatorjs": "^3.11.0"
   }
 }
