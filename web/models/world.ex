@@ -4,6 +4,7 @@ defmodule Game.World do
   @derive {Poison.Encoder, only: [:id, :name]}
   schema "worlds" do
     field :name, :string
+    has_many :tiles, Game.Tile
 
     timestamps()
   end

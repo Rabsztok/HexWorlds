@@ -1,12 +1,14 @@
 defmodule Game.Tile do
   use Game.Web, :model
 
-@derive {Poison.Encoder, only: [:id, :q, :r, :height, :type]}
+  @derive {Poison.Encoder, only: [:id, :x, :y, :z, :height, :terrain_type]}
   schema "tiles" do
-    field :q, :integer
-    field :r, :integer
+    field :x, :integer
+    field :y, :integer
+    field :z, :integer
     field :height, :integer
-    field :type, TileTypeEnum
+    field :terrain_type, TerrainTypeEnum
+    belongs_to :world, Game.World
   end
 
   @doc """
@@ -14,24 +16,34 @@ defmodule Game.Tile do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:q, :r, :height])
+    |> cast(params, [:world_id, :x, :y, :z, :height, :terrain_type])
     |> unique_constraint(:coordinates, name: :coordinates_index)
-    |> validate_required([:q, :r, :height])
+    |> validate_required([:world_id, :x, :y, :z, :terrain_type])
   end
 
-  def random_tile_type do
-    Enum.random(TileTypeEnum.__enum_map__)
+  def random_terrain_type do
+    Enum.random(TerrainTypeEnum.__enum_map__)
   end
 
   defmodule Queries do
     def within_range(position, range) do
       Game.Repo.all(
         from tile in Game.Tile,
-        where: tile.q < ^(position.q + range),
-        where: tile.r < ^(position.r + range),
-        where: tile.q > ^(position.q - range),
-        where: tile.r > ^(position.r - range),
+        where: tile.x < ^(position.x + range),
+        where: tile.y < ^(position.y + range),
+        where: tile.z < ^(position.z + range),
+        where: tile.x > ^(position.x - range),
+        where: tile.y > ^(position.y - range),
+        where: tile.z > ^(position.z - range),
         select: tile
+      )
+    end
+
+    def random(size) do
+      Game.Repo.all(
+        from tile in Game.Tile,
+        order_by: fragment("RANDOM()"),
+        limit: ^size
       )
     end
   end

@@ -2,24 +2,23 @@ defmodule Game.TileGenerator do
   alias Game.Repo
   alias Game.Tile
 
-  defp call(q, r, size) when r <= size do
-    height = :crypto.rand_uniform(1, 5)
-    Repo.insert(Tile.changeset(%Tile{}, %{q: q, r: r, height: height}))
+  defp call(world, x, z, size) when z <= size do
+    Repo.insert(Tile.changeset(%Tile{},
+      %{x: x, y: -x-z, z: z, world_id: world.id, terrain_type: "dirt"}))
 
-    cond do
-      q == size ->
-        call(-size, r + 1, size)
-      true ->
-        call(q + 1, r, size)
+    if x == size do
+      call(world, -size, z + 1, size)
+    else
+      call(world, x + 1, z, size)
     end
   end
 
-  defp call(_q, _y, _size) do
+  defp call(_world, _x, _y, _size) do
   end
 
-  def call(size) do
+  def call(world, size) do
     Task.Supervisor.async_nolink(Game.TaskSupervisor, fn ->
-      call(-size, -size, size)
+      call(world, -size, -size, size)
     end)
   end
 end

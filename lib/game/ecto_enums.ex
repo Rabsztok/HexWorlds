@@ -1,3 +1,3 @@
 import EctoEnum
 
-defenum TileTypeEnum, :tile_type, [:water, :plains, :hills, :mountains]
+defenum TerrainTypeEnum, :terrain_type, [:water, :dirt, :stone, :sand]

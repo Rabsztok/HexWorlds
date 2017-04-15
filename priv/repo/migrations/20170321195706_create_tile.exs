@@ -2,21 +2,23 @@ defmodule Game.Repo.Migrations.CreateTile do
   use Ecto.Migration
 
   def up do
-    TileTypeEnum.create_type
+    TerrainTypeEnum.create_type
 
     create table(:tiles) do
-      add :q, :bigint
-      add :r, :bigint
+      add :x, :bigint
+      add :y, :bigint
+      add :z, :bigint
       add :height, :integer
-      add :type, :tile_type
+      add :terrain_type, :terrain_type
+      add :world_id, references(:worlds, on_delete: :nothing)
     end
 
-    create unique_index(:tiles, [:q, :r], name: :coordinates_index)
+    create unique_index(:tiles, [:world_id, :x, :y, :z], name: :coordinates_index)
   end
 
   def down do
     drop table(:tiles)
 
-    TileTypeEnum.drop_type
+    TerrainTypeEnum.drop_type
   end
 end

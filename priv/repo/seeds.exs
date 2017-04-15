@@ -9,3 +9,8 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+world = Game.Repo.insert!(%Game.World{name: "Sample World"})
+
+Game.TileGenerator.call(world, 10)
+Game.HeightmapGenerator.call()

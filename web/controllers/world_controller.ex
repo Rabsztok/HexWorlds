@@ -17,8 +17,8 @@ defmodule Game.WorldController do
     changeset = World.changeset(%World{}, world_params)
 
     case Repo.insert(changeset) do
-      {:ok, _world} ->
-        Game.TileGenerator.call(10)
+      {:ok, world} ->
+        Game.TileGenerator.call(world, 10)
 
         conn
         |> put_flash(:info, "World created successfully.")

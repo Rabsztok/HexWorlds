@@ -6,7 +6,7 @@ defmodule Game.PlayerChannel do
   alias Game.Tile
 
   def join("player:lobby", _message, socket) do
-    tiles = Tile.Queries.within_range(%{q: 0, r: 0}, 10)
+    tiles = Tile.Queries.within_range(%{x: 0, y: 0, z: 0}, 30)
     {:ok, %{tiles: tiles}, socket}
   end
 end

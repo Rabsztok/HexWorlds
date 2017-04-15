@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import * as THREE from 'three';
 
-export default class HexGeometry extends Component {
+export default class TileGeometry extends Component {
   vertices() {
-    let height = this.props.height;
+    let height = 1;
     let point = 0;
     let size = 1;
     let x = null;
@@ -27,12 +27,12 @@ export default class HexGeometry extends Component {
 
   faces() {
     return [
+        // bottom - skip rendering
+        // new THREE.Face3( 4, 0, 2),
+        // new THREE.Face3( 8, 4, 6),
+        // new THREE.Face3( 0, 8, 10),
+        // new THREE.Face3( 8, 0, 4 ),
         // top
-        new THREE.Face3( 4, 0, 2),
-        new THREE.Face3( 8, 4, 6),
-        new THREE.Face3( 0, 8, 10),
-        new THREE.Face3( 8, 0, 4 ),
-        // bottom
         new THREE.Face3( 1, 5, 3 ),
         new THREE.Face3( 5, 9, 7 ),
         new THREE.Face3( 9, 1, 11 ),
@@ -63,7 +63,7 @@ export default class HexGeometry extends Component {
     let vertices = this.vertices();
     let faces = this.faces();
     return (
-        <geometry vertices={vertices} faces={faces}/>
+        <geometry resourceId="tileGeometry" vertices={vertices} faces={faces}/>
     )
   }
 }
