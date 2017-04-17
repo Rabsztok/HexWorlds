@@ -7,7 +7,7 @@ export default class TileResources extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.colors = {dirt: 0x007B0C, stone: 0xCCCCCC, sand: 0xC2B280, water: 0x40A4DF};
+    this.colors = {dirt: 0x007B0C, stone: 0x666666, sand: 0xC2B280, water: 0x40A4DF};
   }
 
   render() {

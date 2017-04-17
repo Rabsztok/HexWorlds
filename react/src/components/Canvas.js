@@ -39,7 +39,7 @@ export default class Canvas extends Component {
 
           <TileResources/>
 
-          <scene fog={this.fog}>
+          <scene>
             <perspectiveCamera ref={(c) => this.camera = c} name="camera" fov={75}
                                aspect={width / height} near={0.1} far={100}
                                position={this.cameraPosition} lookAt={this.cameraTarget}/>
@@ -48,7 +48,6 @@ export default class Canvas extends Component {
 
             <ambientLight color={0xFFFFFF}/>
             <pointLight color={0xFFFFFF} intensity={1} position={this.lightPosition}/>
-            <hemisphereLight skyColor={0x0000FF} groundColor={0x00FF00} intensity={1}/>
           </scene>
 
         </React3>

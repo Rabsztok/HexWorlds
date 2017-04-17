@@ -39,11 +39,12 @@ defmodule Game.Tile do
       )
     end
 
-    def random(size) do
+    def random(world, limit) do
       Game.Repo.all(
         from tile in Game.Tile,
+        where: tile.world_id == ^(world.id),
         order_by: fragment("RANDOM()"),
-        limit: ^size
+        limit: ^limit
       )
     end
   end
