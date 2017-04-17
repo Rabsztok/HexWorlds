@@ -1,20 +1,20 @@
-# Game
+# HexWorlds
 
-To start your Phoenix app:
+ThreeJS React app with Phoenix backend for generating hexagon-based worlds and seeing them in 3D. 
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  * Install Node.js dependencies with `npm install`
-  * Start Phoenix endpoint with `mix phoenix.server`
+## Install
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+To start your app:
 
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
+  * Install [`docker`](https://www.docker.com/get-docker)
+  * Build and run docker container: `docker-compose up --build`
+  * Run seeds: `docker-compose run web mix run priv/repo/seeds.exs`
+  * Install `npm`
+  * Install dependencies using `npm install`
+  * Run fronend app using `npm start`
 
-## Learn more
+Now you can visit [`localhost:3000`](http://localhost:3000) from your browser.
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+## Note
+
+This project is being made as a hobby in my free time, feel free to contribute or ask about anything here :)
