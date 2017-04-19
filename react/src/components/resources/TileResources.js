@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import * as THREE from 'three';
-import TileGeometry from 'components/geometries/TileGeometry';
 import _map from 'lodash/map';
 
 export default class TileResources extends Component {
@@ -13,7 +12,8 @@ export default class TileResources extends Component {
   render() {
     return (
         <resources>
-          <TileGeometry/>
+          <cylinderGeometry resourceId="tileGeometry"
+                            radiusTop={1} radiusBottom={1} height={1} radialSegments={6}/>
           {_map(this.colors, (code, name) =>
               <meshPhongMaterial key={name} resourceId={`${name}TileMaterial`}
                                  color={code} shading={THREE.FlatShading}/>

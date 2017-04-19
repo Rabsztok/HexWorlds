@@ -8,7 +8,7 @@ export default class Navigation extends Component {
         <Navbar>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to='/'>HexGame</Link>
+              <Link to='/'>Hex Worlds</Link>
             </Navbar.Brand>
           </Navbar.Header>
         </Navbar>

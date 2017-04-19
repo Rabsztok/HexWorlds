@@ -3,7 +3,6 @@ require('styles/world.scss');
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
 import worldStore from 'stores/worldStore';
-import {Panel} from 'react-bootstrap';
 import canvasStore from 'stores/canvasStore';
 import Canvas from 'components/Canvas';
 

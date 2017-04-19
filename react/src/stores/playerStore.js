@@ -1,24 +1,26 @@
-import { observable } from 'mobx';
+import { observable, action } from 'mobx'
 import _bindAll from 'lodash/bindAll'
-import _find from 'lodash/find'
 import PlayerChannel from 'channels/PlayerChannel'
 
 class PlayerStore {
-  @observable tiles = [];
+  @observable.shallow tiles = [];
+  @observable range = 10;
 
   constructor () {
     _bindAll(this, 'handleConnectionSuccess');
 
-    this.channel = new PlayerChannel('player:lobby').connect(this.handleConnectionSuccess)
+    this.channel = new PlayerChannel('player:lobby');
+    this.channel.connect(this.handleConnectionSuccess);
   }
 
-  handleConnectionSuccess (response) {
+  @action handleConnectionSuccess (response) {
     this.tiles = response.tiles;
   }
 
-  // player(id) {
-  //   return _find(this.players, { id: parseInt(id) })
-  // }
+  move (coordinates) {
+    this.channel.socket.push("move", {coordinates: coordinates, range: this.range});
+    this.range += 1;
+  }
 }
 
 const playerStore = new PlayerStore();

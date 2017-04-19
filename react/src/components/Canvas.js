@@ -14,8 +14,6 @@ export default class Canvas extends Component {
     this.cameraTarget = new THREE.Vector3(0, 0, 0);
 
     this.lightPosition = new THREE.Vector3(0, 20, 20);
-
-    this.fog = new THREE.Fog(0xcce0ff, 50, 100);
   }
 
   componentDidMount() {
@@ -34,14 +32,14 @@ export default class Canvas extends Component {
     let {width, height} = this.props;
 
     return (
-        <React3 mainCamera="camera" width={width} height={height} clearColor={this.fog.color}
+        <React3 mainCamera="camera" width={width} height={height} clearColor={0xaaeeff}
                 antialias gammaInput gammaOutput>
 
           <TileResources/>
 
           <scene>
             <perspectiveCamera ref={(c) => this.camera = c} name="camera" fov={75}
-                               aspect={width / height} near={0.1} far={100}
+                               aspect={width / height} near={0.1} far={1000}
                                position={this.cameraPosition} lookAt={this.cameraTarget}/>
 
             <Grid/>

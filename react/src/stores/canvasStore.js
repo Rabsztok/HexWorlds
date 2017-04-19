@@ -1,10 +1,10 @@
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 
 class CanvasStore {
   @observable canvasWidth = null;
   @observable canvasHeight = null;
 
-  setCanvasSize(width, height = width*4/7) {
+  @action setCanvasSize(width, height = width*4/7) {
     this.canvasWidth = width;
     this.canvasHeight = height;
   }
