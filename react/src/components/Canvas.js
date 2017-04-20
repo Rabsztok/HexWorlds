@@ -12,7 +12,6 @@ export default class Canvas extends Component {
 
     this.cameraPosition = new THREE.Vector3(-30, 30, -30);
     this.cameraTarget = new THREE.Vector3(0, 0, 0);
-
     this.lightPosition = new THREE.Vector3(0, 20, 20);
   }
 
@@ -39,7 +38,7 @@ export default class Canvas extends Component {
 
           <scene>
             <perspectiveCamera ref={(c) => this.camera = c} name="camera" fov={75}
-                               aspect={width / height} near={0.1} far={1000}
+                               aspect={width / height} near={0.1} far={2000}
                                position={this.cameraPosition} lookAt={this.cameraTarget}/>
 
             <Grid/>

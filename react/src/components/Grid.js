@@ -6,6 +6,7 @@ import playerStore from 'stores/playerStore';
 import _bindAll from 'lodash/bindAll';
 import _differenceBy from 'lodash/differenceBy';
 import _chunk from 'lodash/chunk';
+import * as THREE from 'three';
 
 @observer
 export default class Grid extends Component {
@@ -16,9 +17,39 @@ export default class Grid extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener("keydown", this.handleKeyPress);
+    // document.addEventListener("keydown", this.handleKeyPress);
+    // playerStore.channel.socket.on("move", this.loadTiles)
+    this.drawGrid()
+  }
 
-    playerStore.channel.socket.on("move", this.loadTiles)
+  componentDidUpdate() {
+    this.drawGrid()
+  }
+
+  drawGrid() {
+    let matrix = new THREE.Matrix4();
+
+    let tmpGeometry = new THREE.Geometry();
+
+    playerStore.tiles.map((tile) => {
+      let hexTmpGeometry = new THREE.CylinderGeometry(1, 1, tile.height, 6);
+
+      matrix.makeScale(0, tile.height || 1, 0);
+      matrix.makeTranslation(
+          (tile.x * Math.sqrt(3) / 2) - (tile.y * Math.sqrt(3) / 2),
+          (tile.height || 1) / 2,
+          (tile.z / 2) - (tile.x) - (tile.y)
+      );
+
+      tmpGeometry.merge(hexTmpGeometry, matrix);
+    });
+
+    let geometry = new THREE.BufferGeometry().fromGeometry( tmpGeometry );
+    geometry.computeBoundingSphere();
+
+    console.log(playerStore.tiles.length);
+    let mesh = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xCCCCAA, shading: THREE.FlatShading } ) );
+    this.grid.add( mesh );
   }
 
   shouldComponentUpdate() {
@@ -45,11 +76,12 @@ export default class Grid extends Component {
   }
 
   render() {
+    console.log(playerStore.tiles.length);
     return (
-        <group>
-          {playerStore.tiles.map((tile) =>
-            <Tile key={tile.id} {...tile}/>
-          )}
+        <group ref={(grid) => this.grid = grid}>
+          {/*{playerStore.tiles.map((tile) =>*/}
+            {/*<Tile key={tile.id} {...tile}/>*/}
+          {/*)}*/}
         </group>
     )
   }
