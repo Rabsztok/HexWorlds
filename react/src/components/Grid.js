@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import { action } from 'mobx'
 import {observer} from 'mobx-react';
-import Tile from 'components/meshes/Tile';
 import playerStore from 'stores/playerStore';
 import _bindAll from 'lodash/bindAll';
 import _differenceBy from 'lodash/differenceBy';
-import _chunk from 'lodash/chunk';
+import _each from 'lodash/each';
+import GridGeometry from 'components/geometries/GridGeometry'
 import * as THREE from 'three';
 
 @observer
@@ -13,13 +13,14 @@ export default class Grid extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.terrains = {dirt: 0x007B0C, stone: 0x666666, sand: 0xC2B280, water: 0x40A4DF};
+
     _bindAll(this, 'handleKeyPress')
   }
 
   componentDidMount() {
     // document.addEventListener("keydown", this.handleKeyPress);
     // playerStore.channel.socket.on("move", this.loadTiles)
-    this.drawGrid()
   }
 
   componentDidUpdate() {
@@ -27,34 +28,14 @@ export default class Grid extends Component {
   }
 
   drawGrid() {
-    let matrix = new THREE.Matrix4();
-
-    let tmpGeometry = new THREE.Geometry();
-
-    playerStore.tiles.map((tile) => {
-      let hexTmpGeometry = new THREE.CylinderGeometry(1, 1, tile.height, 6);
-
-      matrix.makeScale(0, tile.height || 1, 0);
-      matrix.makeTranslation(
-          (tile.x * Math.sqrt(3) / 2) - (tile.y * Math.sqrt(3) / 2),
-          (tile.height || 1) / 2,
-          (tile.z / 2) - (tile.x) - (tile.y)
+    _each(this.terrains, (color, terrain) => {
+      let geometry = new GridGeometry().drawGrid(playerStore.tiles, terrain);
+      let mesh = new THREE.Mesh(
+          geometry,
+          new THREE.MeshLambertMaterial( { color: color, shading: THREE.FlatShading } )
       );
-
-      tmpGeometry.merge(hexTmpGeometry, matrix);
+      this.grid.add( mesh );
     });
-
-    let geometry = new THREE.BufferGeometry().fromGeometry( tmpGeometry );
-    geometry.computeBoundingSphere();
-
-    console.log(playerStore.tiles.length);
-    let mesh = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xCCCCAA, shading: THREE.FlatShading } ) );
-    this.grid.add( mesh );
-  }
-
-  shouldComponentUpdate() {
-    console.log('update');
-    return false;
   }
 
   @action loadTiles(payload) {
@@ -78,11 +59,7 @@ export default class Grid extends Component {
   render() {
     console.log(playerStore.tiles.length);
     return (
-        <group ref={(grid) => this.grid = grid}>
-          {/*{playerStore.tiles.map((tile) =>*/}
-            {/*<Tile key={tile.id} {...tile}/>*/}
-          {/*)}*/}
-        </group>
+        <group ref={(grid) => this.grid = grid}/>
     )
   }
 }

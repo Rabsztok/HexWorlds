@@ -43,6 +43,8 @@ export default class Canvas extends Component {
 
             <Grid/>
 
+            <axisHelper/>
+
             <ambientLight color={0xFFFFFF}/>
             <pointLight color={0xFFFFFF} intensity={1} position={this.lightPosition}/>
           </scene>

@@ -3,7 +3,7 @@ import _bindAll from 'lodash/bindAll'
 import PlayerChannel from 'channels/PlayerChannel'
 
 class PlayerStore {
-  @observable.shallow tiles = [];
+  @observable tiles = {};
   @observable range = 10;
 
   constructor () {
@@ -14,7 +14,15 @@ class PlayerStore {
   }
 
   @action handleConnectionSuccess (response) {
-    this.tiles = response.tiles;
+    let tiles = {};
+    response.tiles.map((tile) => {
+      if (!tiles[tile.x])
+        tiles[tile.x] = {};
+      if (!tiles[tile.x][tile.y])
+        tiles[tile.x][tile.y] = {};
+      tiles[tile.x][tile.y][tile.z] = tile;
+    });
+    this.tiles = tiles
   }
 
   move (coordinates) {
