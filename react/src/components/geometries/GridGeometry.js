@@ -1,10 +1,8 @@
 import * as THREE from 'three';
-import _each from 'lodash/each';
+import playerStore from 'stores/playerStore';
 
 export default class GridGeometry extends THREE.BufferGeometry {
-  drawGrid(tiles, terrain) {
-    this.tiles = tiles;
-
+  drawGrid(terrain) {
     let tmpGeometry = new THREE.Geometry();
 
     let topGeometry = new THREE.CircleBufferGeometry(1, 6);
@@ -49,21 +47,17 @@ export default class GridGeometry extends THREE.BufferGeometry {
     xyGeometry.translate(0, -0.5, Math.sqrt(3) / 2);
     xyGeometry.rotateY(-Math.PI / 2);
 
-    _each(tiles, (x) =>
-      _each(x, (y) =>
-        _each(y, (tile) => {
-          if (tile.terrain_type === terrain) {
-            this.mergeGeometry(tmpGeometry, topGeometry, tile);
-            this.mergeGeometry(tmpGeometry, xzGeometry, tile, {x: -1, y: 0, z: 1});
-            this.mergeGeometry(tmpGeometry, yzGeometry, tile, {x: 0, y: -1, z: 1});
-            this.mergeGeometry(tmpGeometry, yxGeometry, tile, {x: 1, y: -1, z: 0});
-            this.mergeGeometry(tmpGeometry, zxGeometry, tile, {x: 0, y: 1, z: -1});
-            this.mergeGeometry(tmpGeometry, zyGeometry, tile, {x: 1, y: 0, z: -1});
-            this.mergeGeometry(tmpGeometry, xyGeometry, tile, {x: -1, y: 1, z: 0});
-          }
-        })
-      )
-    );
+    playerStore.tiles.map((tile) => {
+      if (tile.terrain_type === terrain) {
+        this.mergeGeometry(tmpGeometry, topGeometry, tile);
+        this.mergeGeometry(tmpGeometry, xzGeometry, tile, {x: -1, y: 0, z: 1});
+        this.mergeGeometry(tmpGeometry, yzGeometry, tile, {x: 0, y: -1, z: 1});
+        this.mergeGeometry(tmpGeometry, yxGeometry, tile, {x: 1, y: -1, z: 0});
+        this.mergeGeometry(tmpGeometry, zxGeometry, tile, {x: 0, y: 1, z: -1});
+        this.mergeGeometry(tmpGeometry, zyGeometry, tile, {x: 1, y: 0, z: -1});
+        this.mergeGeometry(tmpGeometry, xyGeometry, tile, {x: -1, y: 1, z: 0});
+      }
+    });
 
     this.fromGeometry(tmpGeometry);
     this.computeBoundingSphere();
@@ -75,9 +69,9 @@ export default class GridGeometry extends THREE.BufferGeometry {
     let matrix = new THREE.Matrix4();
 
     matrix.makeTranslation(
-        (tile.x * Math.sqrt(3) / 2) - (tile.y * Math.sqrt(3) / 2),
-        (tile.height || 1),
-        (tile.z / 2) - (tile.x) - (tile.y)
+        ( 2 * tile.x + tile.z) * Math.sqrt(3) / 2,
+        tile.height || 1,
+        tile.z * 3 / 2
     );
 
     let height = 1;
@@ -93,7 +87,7 @@ export default class GridGeometry extends THREE.BufferGeometry {
 
   getHeight(x, y, z) {
     try {
-      return this.tiles[x][y][z].height
+      return playerStore.tileMatrix[x][y][z].height
     } catch(_err) {
       return 0
     }
