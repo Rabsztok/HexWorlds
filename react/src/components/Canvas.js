@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {action} from 'mobx';
+import {action, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import React3 from 'react-three-renderer';
 import * as THREE from 'three';
@@ -9,11 +9,14 @@ import Grid from 'components/Grid';
 import TileResources from 'components/resources/TileResources';
 import canvasStore from 'stores/canvasStore';
 import playerStore from 'stores/playerStore';
+import { worldToCube, cubeToWorld } from 'utils/coordinates'
 
 let OrbitControls = require('three-orbit-controls')(THREE);
 
 @observer
 export default class Canvas extends Component {
+  @observable axisPosition = new THREE.Vector3(0,1,0)
+
   constructor(props, context) {
     super(props, context);
 
@@ -32,10 +35,6 @@ export default class Canvas extends Component {
     window.addEventListener( 'mousedown', this.handleTouchMove, false );
   }
 
-  componentDidUpdate() {
-    console.log(canvasStore.cameraPosition)
-  }
-
   handleTouchMove(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -45,9 +44,17 @@ export default class Canvas extends Component {
     mouse.y = -( e.clientY / window.innerHeight ) * 2 + 1;
 
     this.raycaster.setFromCamera( mouse, this.camera );
-    let intersects = this.raycaster.intersectObjects(playerStore.grid.children);
-    let tile = _find(intersects, (intersect) => intersect.object.name === "tile");
-    console.log(tile)
+    let intersect = this.raycaster.intersectObjects(playerStore.grid.children)[0];
+
+    if (intersect) {
+      let cube = worldToCube(intersect.point)
+      let found = playerStore.nearest(cube)
+      this.setAxisPosition(new THREE.Vector3(cubeToWorld(found).x, 1, cubeToWorld(found).z))
+    }
+  }
+
+  @action setAxisPosition(vector) {
+    this.axisPosition = vector
   }
 
   componentWillUnmount() {
@@ -71,7 +78,7 @@ export default class Canvas extends Component {
 
             <Grid/>
 
-            <axisHelper/>
+            <axisHelper position={this.axisPosition} scale={new THREE.Vector3(5,5,5)}/>
 
             <ambientLight color={0xFFFFFF}/>
             <pointLight color={0xFFFFFF} intensity={1} position={canvasStore.lightPosition}/>

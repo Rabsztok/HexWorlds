@@ -12,5 +12,4 @@
 
 world = Game.Repo.insert!(%Game.World{name: "Sample World"})
 
-Game.TileGenerator.call(world, 10)
-Game.HeightmapGenerator.call()
+Game.WorldGenerator.call(world, 10)
