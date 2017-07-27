@@ -12,4 +12,4 @@
 
 world = Game.Repo.insert!(%Game.World{name: "Sample World"})
 
-Game.WorldGenerator.call(world, 10)
+Game.WorldGenerator.call(world, 50)
