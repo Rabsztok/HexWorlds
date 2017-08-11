@@ -14,7 +14,7 @@ defmodule Game.WaterGenerator do
       where: tile.world_id == ^(world.id),
       where: tile.height <= ^sea_level,
       update: [
-        set: [terrain_type: "water"]
+        set: [terrain: ^(%{type: "water"})]
       ]
     )
     |> Repo.update_all([])
@@ -26,7 +26,7 @@ defmodule Game.WaterGenerator do
       where: tile.world_id == ^(world.id),
       where: tile.height == ^beach_level,
       update: [
-        set: [terrain_type: "sand"]
+        set: [terrain: ^(%{type: "sand"})]
       ]
     )
     |> Repo.update_all([])

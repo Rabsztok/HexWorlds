@@ -5,7 +5,7 @@ defmodule Game.TileGenerator do
   defp call(world, z, size) when z <= size do
     Repo.insert_all(
       Tile,
-      Enum.map(-size..size, fn x -> [x: x, y: -x-z, z: z, height: 1, world_id: world.id, terrain_type: "dirt"] end),
+      Enum.map(-size..size, fn x -> [x: x, y: -x-z, z: z, height: 1, world_id: world.id, terrain: %{type: "dirt"}] end),
       on_conflict: :nothing
     )
 

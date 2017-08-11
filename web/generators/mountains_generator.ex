@@ -29,8 +29,8 @@ defmodule Game.MountainsGenerator do
       where: tile.y > ^(peak.y - range),
       where: tile.z > ^(peak.z - range),
       update: [
-        set: [terrain_type: "stone"],
-        inc: [height: fragment("floor((random() + 1) * 3/2 * ?/10)", ^range)]
+        set: [terrain: ^(%{type: "stone"})],
+        inc: [height: fragment("floor((random() + 1) * 2 * ?/10)", ^range)]
       ]
     )
     |> Repo.update_all([])

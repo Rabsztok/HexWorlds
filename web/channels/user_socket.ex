@@ -4,7 +4,7 @@ defmodule Game.UserSocket do
   ## Channels
   channel "worlds:*", Game.WorldChannel
   channel "world:*", Game.WorldChannel
-  channel "player:*", Game.PlayerChannel
+  channel "tiles:*", Game.TileChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

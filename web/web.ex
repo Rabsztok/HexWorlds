@@ -16,6 +16,9 @@ defmodule Game.Web do
   below.
   """
 
+	@primary_key {:id, :binary_id, autogenerate: true}
+	@foreign_key_type :binary_id
+
   def model do
     quote do
       use Ecto.Schema

@@ -8,7 +8,8 @@ defmodule Game.WorldGenerator do
     tiles_count = Repo.aggregate Tile, :count, :id
 
     Game.HillsGenerator.call(world, div(tiles_count, 200))
-    Game.MountainsGenerator.call(world, div(tiles_count, 1500))
+    Game.ForestsGenerator.call(world, div(tiles_count, 500))
+    Game.MountainsGenerator.call(world, div(tiles_count, 2000))
     Game.WaterGenerator.call(world, 1)
   end
 end

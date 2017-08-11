@@ -10,6 +10,9 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-world = Game.Repo.insert!(%Game.World{name: "Sample World"})
+#Game.Repo.delete_all(Game.Tile)
+#Game.Repo.delete_all(Game.World)
 
-Game.WorldGenerator.call(world, 50)
+world = Game.Repo.insert!(%Game.World{name: "World #{:crypto.rand_uniform(1, 9999)}"})
+
+Game.WorldGenerator.call(world, 150)
