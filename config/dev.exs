@@ -20,6 +20,6 @@ config :phoenix, :stacktrace_depth, 20
 config :game, Game.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
-  database: "game_dev",
+  database: "postgres",
   hostname: "game_db_1",
   pool_size: 10

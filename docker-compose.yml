@@ -3,9 +3,6 @@ version: '2'
 services:
   db:
     image: postgres
-    networks:
-      - default
-      - outside
     ports:
       - '5432:5432'
 
@@ -16,16 +13,9 @@ services:
     volumes:
       - './:/app'
     working_dir: /app
-    command: mix phoenix.server
+    command: ./start.sh
     environment:
       - MIX_ENV=dev
       - PORT=4000
     links:
       - db:db
-    networks:
-      - default
-      - outside
-
-networks:
-  outside:
-    external: true
