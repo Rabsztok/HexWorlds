@@ -1,5 +1,5 @@
 defmodule GameWeb.Router do
-  use Game.Web, :router
+  use GameWeb, :router
 
   pipeline :api do
     plug :accepts, ["json"]

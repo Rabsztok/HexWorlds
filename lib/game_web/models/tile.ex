@@ -1,5 +1,5 @@
 defmodule GameWeb.Tile do
-  use Game.Web, :model
+  use GameWeb, :model
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id

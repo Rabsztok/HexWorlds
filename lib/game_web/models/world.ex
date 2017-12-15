@@ -1,5 +1,5 @@
 defmodule GameWeb.World do
-  use Game.Web, :model
+  use GameWeb, :model
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @derive {Phoenix.Param, key: :id}

@@ -1,5 +1,5 @@
 defmodule GameWeb.WorldView do
-  use Game.Web, :view
+  use GameWeb, :view
 
   def render("index.json", %{worlds: worlds}) do
     %{ worlds: Enum.map(worlds, &world_json/1) }

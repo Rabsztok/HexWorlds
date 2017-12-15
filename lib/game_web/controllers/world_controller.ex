@@ -1,5 +1,5 @@
 defmodule GameWeb.WorldController do
-  use Game.Web, :controller
+  use GameWeb, :controller
 
   alias GameWeb.World
 
