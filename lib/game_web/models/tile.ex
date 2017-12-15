@@ -1,4 +1,4 @@
-defmodule Game.Tile do
+defmodule GameWeb.Tile do
   use Game.Web, :model
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -13,7 +13,7 @@ defmodule Game.Tile do
     field :height, :integer
     field :terrain, :map
 
-    belongs_to :world, Game.World
+    belongs_to :world, GameWeb.World
   end
 
   @doc """
@@ -29,7 +29,7 @@ defmodule Game.Tile do
   defmodule Queries do
     def within_range(world_id, position, range) do
       Game.Repo.all(
-        from tile in Game.Tile,
+        from tile in GameWeb.Tile,
         where: tile.world_id == ^(world_id),
         where: tile.x < ^(position.x + range),
         where: tile.y < ^(position.y + range),
@@ -43,7 +43,7 @@ defmodule Game.Tile do
 
     def random(world, limit) do
       Game.Repo.all(
-        from tile in Game.Tile,
+        from tile in GameWeb.Tile,
         where: tile.world_id == ^(world.id),
         order_by: fragment("RANDOM()"),
         limit: ^limit

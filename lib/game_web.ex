@@ -31,14 +31,14 @@ defmodule Game.Web do
 
   def controller do
     quote do
-      use Phoenix.Controller
+      use Phoenix.Controller, namespace: GameWeb
 
       alias Game.Repo
       import Ecto
       import Ecto.Query
 
-      import Game.Router.Helpers
-      import Game.Gettext
+      import GameWeb.Router.Helpers
+      import GameWeb.Gettext
     end
   end
 
@@ -58,7 +58,7 @@ defmodule Game.Web do
       alias Game.Repo
       import Ecto
       import Ecto.Query
-      import Game.Gettext
+      import GameWeb.Gettext
     end
   end
 

@@ -1,3 +1,3 @@
 defmodule Game.LayoutViewTest do
-  use Game.ConnCase, async: true
+  use GameWeb.ConnCase, async: true
 end

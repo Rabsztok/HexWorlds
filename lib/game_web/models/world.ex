@@ -1,4 +1,4 @@
-defmodule Game.World do
+defmodule GameWeb.World do
   use Game.Web, :model
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -7,7 +7,7 @@ defmodule Game.World do
 
   schema "worlds" do
     field :name, :string
-    has_many :tiles, Game.Tile, on_delete: :delete_all
+    has_many :tiles, GameWeb.Tile, on_delete: :delete_all
 
     timestamps()
   end

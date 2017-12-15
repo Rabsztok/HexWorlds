@@ -1,10 +1,10 @@
-defmodule Game.UserSocket do
+defmodule GameWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  channel "worlds:*", Game.WorldChannel
-  channel "world:*", Game.WorldChannel
-  channel "tiles:*", Game.TileChannel
+  channel "worlds:*", GameWeb.WorldChannel
+  channel "world:*", GameWeb.WorldChannel
+  channel "tiles:*", GameWeb.TileChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket, timeout: 45_000
@@ -32,7 +32,7 @@ defmodule Game.UserSocket do
   # Would allow you to broadcast a "disconnect" event and terminate
   # all active sockets and channels for a given user:
   #
-  #     Game.Endpoint.broadcast("users_socket:#{user.id}", "disconnect", %{})
+  #     GameWeb.Endpoint.broadcast("users_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
   def id(_socket), do: nil

@@ -10,10 +10,10 @@ config :game,
   ecto_repos: [Game.Repo]
 
 # Configures the endpoint
-config :game, Game.Endpoint,
+config :game, GameWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "US6enMva0ImIIF7nsK7qlmlmVWNZcSod2V+kgw5l2D5yS2IBKgk2iGERMiVF+XD6",
-  render_errors: [view: Game.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: GameWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Game.PubSub,
            adapter: Phoenix.PubSub.PG2]
 

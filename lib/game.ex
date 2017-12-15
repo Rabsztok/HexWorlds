@@ -11,7 +11,7 @@ defmodule Game do
       # Start the Ecto repository
       supervisor(Game.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(Game.Endpoint, []),
+      supervisor(GameWeb.Endpoint, []),
       # Start your own worker by calling: Game.Worker.start_link(arg1, arg2, arg3)
       # worker(Game.Worker, [arg1, arg2, arg3]),
       supervisor(Task.Supervisor, [[name: Game.TaskSupervisor]])
@@ -26,7 +26,7 @@ defmodule Game do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    Game.Endpoint.config_change(changed, removed)
+    GameWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end

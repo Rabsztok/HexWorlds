@@ -1,7 +1,7 @@
-defmodule Game.WorldController do
+defmodule GameWeb.WorldController do
   use Game.Web, :controller
 
-  alias Game.World
+  alias GameWeb.World
 
   def index(conn, _params) do
     worlds = Repo.all(World)
@@ -18,7 +18,7 @@ defmodule Game.WorldController do
 
     case Repo.insert(changeset) do
       {:ok, world} ->
-        Game.WorldGenerator.call(world, 10)
+        GameWeb.WorldGenerator.call(world, 10)
 
         render(conn, "show.json", world: world)
       {:error, changeset} ->

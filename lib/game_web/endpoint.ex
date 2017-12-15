@@ -1,7 +1,7 @@
-defmodule Game.Endpoint do
+defmodule GameWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :game
 
-  socket "/socket", Game.UserSocket
+  socket "/socket", GameWeb.UserSocket
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -30,5 +30,5 @@ defmodule Game.Endpoint do
     key: "_game_key",
     signing_salt: "lRg7Shbq"
 
-  plug Game.Router
+  plug GameWeb.Router
 end

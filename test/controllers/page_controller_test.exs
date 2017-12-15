@@ -1,5 +1,5 @@
 defmodule Game.PageControllerTest do
-  use Game.ConnCase
+  use GameWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"

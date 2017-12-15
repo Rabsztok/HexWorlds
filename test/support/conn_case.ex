@@ -1,4 +1,4 @@
-defmodule Game.ConnCase do
+defmodule GameWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -25,10 +25,10 @@ defmodule Game.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import Game.Router.Helpers
+      import GameWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint Game.Endpoint
+      @endpoint GameWeb.Endpoint
     end
   end
 

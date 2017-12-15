@@ -1,6 +1,6 @@
-defmodule Game.TileGenerator do
+defmodule GameWeb.TileGenerator do
   alias Game.Repo
-  alias Game.Tile
+  alias GameWeb.Tile
 
   defp call(world, z, size) when z <= size do
     Repo.insert_all(

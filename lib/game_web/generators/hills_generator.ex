@@ -1,7 +1,7 @@
-defmodule Game.HillsGenerator do
+defmodule GameWeb.HillsGenerator do
   import Ecto.Query
   alias Game.Repo
-  alias Game.Tile
+  alias GameWeb.Tile
 
   def call(world, amount) do
     Repo.update_all(Tile, [set: [height: 1]])

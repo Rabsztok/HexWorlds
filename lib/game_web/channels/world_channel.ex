@@ -1,10 +1,10 @@
 require IEx
 
-defmodule Game.WorldChannel do
+defmodule GameWeb.WorldChannel do
   use Phoenix.Channel
 
   alias Game.Repo
-  alias Game.World
+  alias GameWeb.World
 
   def join("worlds:lobby", _message, socket) do
     worlds = Repo.all(World)

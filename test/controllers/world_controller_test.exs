@@ -1,5 +1,5 @@
 defmodule Game.WorldControllerTest do
-  use Game.ConnCase
+  use GameWeb.ConnCase
 
   alias Game.World
   @valid_attrs %{name: "some content"}

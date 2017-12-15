@@ -1,7 +1,7 @@
-defmodule Game.MountainsGenerator do
+defmodule GameWeb.MountainsGenerator do
   import Ecto.Query
   alias Game.Repo
-  alias Game.Tile
+  alias GameWeb.Tile
 
   def call(world, amount) do
     peaks = Tile.Queries.random(world, amount)
@@ -15,7 +15,7 @@ defmodule Game.MountainsGenerator do
     create_mountains(world, remaining_peaks)
   end
 
-  def create_mountains(world, []) do
+  def create_mountains(_world, []) do
   end
 
   def raise_terrain(world, peak, range) when range > 0 do

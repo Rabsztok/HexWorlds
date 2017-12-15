@@ -1,4 +1,4 @@
-defmodule Game.WorldView do
+defmodule GameWeb.WorldView do
   use Game.Web, :view
 
   def render("index.json", %{worlds: worlds}) do

@@ -3,7 +3,7 @@ use Mix.Config
 # For development, we disable any cache and enable
 # debugging and code reloading.
 
-config :game, Game.Endpoint,
+config :game, GameWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,

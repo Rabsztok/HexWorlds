@@ -1,4 +1,4 @@
-defmodule Game.PageController do
+defmodule GameWeb.PageController do
   use Game.Web, :controller
 
   def index(conn, _params) do
