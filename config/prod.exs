@@ -15,7 +15,8 @@ config :game, GameWeb.Endpoint,
   http: [port: {:system, "PORT"}],
   url: [scheme: "https", host: "hex-worlds.herokuapp.com", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
-  secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE")
+  secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
+  check_origin: false # Todo: Set origins based on ENV
 
 # Do not print debug messages in production
 config :logger, level: :info
