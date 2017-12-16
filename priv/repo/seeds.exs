@@ -13,6 +13,8 @@
 #Game.Repo.delete_all(Game.Tile)
 #Game.Repo.delete_all(Game.World)
 
-world = Game.Repo.insert!(%Game.World{name: "World #{:crypto.rand_uniform(1, 9999)}"})
+alias Game.World
+
+world = Game.Repo.insert!(%World{name: "World #{:crypto.rand_uniform(1, 9999)}"})
 
 Game.WorldGenerator.call(world, 150)

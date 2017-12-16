@@ -1,7 +1,7 @@
 defmodule GameWeb.WorldController do
   use GameWeb, :controller
 
-  alias GameWeb.World
+  alias Game.World
 
   def index(conn, _params) do
     worlds = Repo.all(World)

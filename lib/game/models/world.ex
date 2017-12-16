@@ -1,5 +1,5 @@
-defmodule GameWeb.World do
-  use GameWeb, :model
+defmodule Game.World do
+  use Game, :model
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @derive {Phoenix.Param, key: :id}
@@ -7,7 +7,7 @@ defmodule GameWeb.World do
 
   schema "worlds" do
     field :name, :string
-    has_many :tiles, GameWeb.Tile, on_delete: :delete_all
+    has_many :tiles, Game.Tile, on_delete: :delete_all
 
     timestamps()
   end

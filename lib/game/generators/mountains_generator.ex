@@ -1,7 +1,7 @@
-defmodule GameWeb.MountainsGenerator do
+defmodule Game.MountainsGenerator do
   import Ecto.Query
   alias Game.Repo
-  alias GameWeb.Tile
+  alias Game.Tile
 
   def call(world, amount) do
     peaks = Tile.Queries.random(world, amount)

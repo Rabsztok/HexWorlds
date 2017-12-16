@@ -4,7 +4,7 @@ defmodule GameWeb.WorldChannel do
   use Phoenix.Channel
 
   alias Game.Repo
-  alias GameWeb.World
+  alias Game.World
 
   def join("worlds:lobby", _message, socket) do
     worlds = Repo.all(World)

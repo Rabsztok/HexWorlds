@@ -1,7 +1,7 @@
-defmodule GameWeb.ForestsGenerator do
+defmodule Game.ForestsGenerator do
   import Ecto.Query
   alias Game.Repo
-  alias GameWeb.Tile
+  alias Game.Tile
 
   def call(world, amount) do
     centers = Tile.Queries.random(world, amount)

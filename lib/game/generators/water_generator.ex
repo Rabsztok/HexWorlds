@@ -1,7 +1,7 @@
-defmodule GameWeb.WaterGenerator do
+defmodule Game.WaterGenerator do
   import Ecto.Query
   alias Game.Repo
-  alias GameWeb.Tile
+  alias Game.Tile
 
   def call(world, sea_level) do
     create_sea(world, sea_level)

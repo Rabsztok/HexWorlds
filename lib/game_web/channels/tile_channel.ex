@@ -2,7 +2,7 @@ defmodule GameWeb.TileChannel do
 	use Phoenix.Channel
 	require Logger
 
-  alias GameWeb.Tile
+  alias Game.Tile
 
   def join("tiles:lobby", %{"world_id" => world_id}, socket) do
     tiles = Tile.Queries.within_range(world_id, %{x: 0, y: 0, z: 0}, 100)
