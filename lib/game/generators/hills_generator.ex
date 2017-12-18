@@ -4,7 +4,12 @@ defmodule Game.HillsGenerator do
   alias Game.Tile
 
   def call(world, amount) do
-    Repo.update_all(Tile, [set: [height: 1]])
+    from(
+      tile in Tile,
+      where: tile.world_id == ^(world.id),
+      update: [ set: [height: 1] ]
+    )
+    |> Repo.update_all([])
     peaks = Tile.Queries.random(world, amount)
 
     create_hills(world, peaks)
