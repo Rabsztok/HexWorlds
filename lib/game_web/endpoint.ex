@@ -30,5 +30,7 @@ defmodule GameWeb.Endpoint do
     key: "_game_key",
     signing_salt: "lRg7Shbq"
 
+  plug CORSPlug
+
   plug GameWeb.Router
 end
