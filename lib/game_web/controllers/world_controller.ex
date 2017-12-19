@@ -13,12 +13,14 @@ defmodule GameWeb.WorldController do
     render(conn, "show.json", world: world)
   end
 
-  def create(conn, %{"world" => world_params}) do
+  def create(conn, %{"world" => world_params, "size" => size }) do
     changeset = World.changeset(%World{}, world_params)
+    generation_size = elem(Integer.parse(size), 0)
 
     case Repo.insert(changeset) do
       {:ok, world} ->
-        GameWeb.WorldGenerator.call(world, 10)
+        Task.start_link(fn -> Game.WorldGenerator.call(world, generation_size) end)
+
 
         render(conn, "show.json", world: world)
       {:error, changeset} ->
@@ -40,15 +42,11 @@ defmodule GameWeb.WorldController do
 #    end
 #  end
 #
-#  def delete(conn, %{"id" => id}) do
-#    world = Repo.get!(World, id)
-#
-#    # Here we use delete! (with a bang) because we expect
-#    # it to always work (and if it does not, it will raise).
-#    Repo.delete!(world)
-#
-#    conn
-#    |> put_flash(:info, "World deleted successfully.")
-#    |> redirect(to: world_path(conn, :index))
-#  end
+  def delete(conn, %{"id" => id}) do
+    world = Repo.get!(World, id)
+
+    Repo.delete!(world)
+
+    render(conn, "show.json", world: world)
+  end
 end

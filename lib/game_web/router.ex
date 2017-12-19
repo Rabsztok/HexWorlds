@@ -8,6 +8,6 @@ defmodule GameWeb.Router do
   scope "/api", GameWeb do
     pipe_through :api
 
-    resources "/worlds", WorldController, only: [:show, :index, :create]
+    resources "/worlds", WorldController, except: [:update]
   end
 end
