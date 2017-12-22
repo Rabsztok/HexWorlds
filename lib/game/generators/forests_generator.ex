@@ -22,7 +22,8 @@ defmodule Game.ForestsGenerator do
     from(
       tile in Tile,
       where: tile.world_id == ^(world.id),
-#      where: fragment("?.\"terrain\"->\"type\"", tile) in ["dirt", "forest"],
+      where: tile.height > 2,
+#      where: tile.fragment("\"terrain\"->\"type\"") in ["dirt", "forest"],
       where: tile.x < ^(center.x + range - :rand.uniform(3)),
       where: tile.y < ^(center.y + range - :rand.uniform(3)),
       where: tile.z < ^(center.z + range - :rand.uniform(3)),

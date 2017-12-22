@@ -21,7 +21,6 @@ defmodule GameWeb.WorldController do
       {:ok, world} ->
         Task.start_link(fn -> Game.WorldGenerator.call(world, generation_size) end)
 
-
         render(conn, "show.json", world: world)
       {:error, changeset} ->
         render(conn, "error.json", changeset: changeset)

@@ -16,4 +16,4 @@
 alias Game.World
 
 world = Game.Repo.insert!(%World{name: "World #{:crypto.rand_uniform(1, 9999)}"})
-Game.WorldGenerator.call(world, 500)
+Game.WorldGenerator.call(world, 50)

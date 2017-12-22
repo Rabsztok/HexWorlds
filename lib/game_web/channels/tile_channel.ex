@@ -5,7 +5,7 @@ defmodule GameWeb.TileChannel do
   alias Game.Tile
 
   def join("tiles:lobby", %{"world_id" => world_id}, socket) do
-    tiles = Tile.Queries.within_range(world_id, %{x: 0, y: 0, z: 0}, 50)
+    tiles = Tile.Queries.within_range(world_id, %{x: 0, y: 0, z: 0}, 100)
     {:ok, %{tiles: tiles}, socket}
   end
 
