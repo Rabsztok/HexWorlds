@@ -13,6 +13,7 @@ defmodule Game.Tile do
     field :height, :integer
     field :terrain, :map
 
+    belongs_to :region, Game.Region
     belongs_to :world, Game.World
   end
 
@@ -21,9 +22,9 @@ defmodule Game.Tile do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:world_id, :x, :y, :z, :height, :terrain])
+    |> cast(params, [:world_id, :region_id, :x, :y, :z, :height, :terrain])
     |> unique_constraint(:coordinates, name: :coordinates_index)
-    |> validate_required([:world_id, :x, :y, :z, :terrain])
+    |> validate_required([:world_id, :region_id, :x, :y, :z, :terrain])
   end
 
   defmodule Queries do
@@ -31,12 +32,12 @@ defmodule Game.Tile do
       Game.Repo.all(
         from tile in Game.Tile,
         where: tile.world_id == ^(world_id),
-        where: tile.x < ^(position.x + range),
-        where: tile.y < ^(position.y + range),
-        where: tile.z < ^(position.z + range),
-        where: tile.x > ^(position.x - range),
-        where: tile.y > ^(position.y - range),
-        where: tile.z > ^(position.z - range),
+        where: tile.x <= ^(position.x + range),
+        where: tile.y <= ^(position.y + range),
+        where: tile.z <= ^(position.z + range),
+        where: tile.x >= ^(position.x - range),
+        where: tile.y >= ^(position.y - range),
+        where: tile.z >= ^(position.z - range),
         select: tile
       )
     end

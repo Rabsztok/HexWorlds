@@ -10,7 +10,7 @@ defmodule Game.MountainsGenerator do
   end
 
   def create_mountains(world, [peak | remaining_peaks]) do
-    raise_terrain(world, peak, :crypto.rand_uniform(10, 15))
+    raise_terrain(world, peak, 9 + :rand.uniform(6))
 
     create_mountains(world, remaining_peaks)
   end

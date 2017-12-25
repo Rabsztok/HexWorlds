@@ -8,6 +8,7 @@ defmodule Game.World do
   schema "worlds" do
     field :name, :string
     has_many :tiles, Game.Tile, on_delete: :delete_all
+    has_many :regions, Game.Region, on_delete: :delete_all
 
     timestamps()
   end
@@ -19,9 +20,5 @@ defmodule Game.World do
     struct
     |> cast(params, [:name])
     |> validate_required([:name])
-  end
-
-  def random_coordinate do
-    :crypto.rand_uniform(-100, 100)
   end
 end

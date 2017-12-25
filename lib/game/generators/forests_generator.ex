@@ -10,7 +10,7 @@ defmodule Game.ForestsGenerator do
   end
 
   def create_forests(world, [center | remaining_centers]) do
-    plant_trees(world, center, :crypto.rand_uniform(3, 10))
+    plant_trees(world, center, 2 + :rand.uniform(8))
 
     create_forests(world, remaining_centers)
   end
