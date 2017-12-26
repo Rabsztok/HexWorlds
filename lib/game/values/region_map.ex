@@ -1,7 +1,21 @@
 defmodule Game.RegionMap do
-  def generate(size, {x,y,z}) do
+  alias Game.Region
+  alias Game.Repo
+
+  defp save(regions) do
+    {size, regions} = Repo.insert_all(
+      Region,
+      regions,
+      on_conflict: :nothing,
+      returning: true
+    )
+
+    regions
+  end
+
+  def generate_neighbors(world, region) do
+    size = Region.size
     neighbors_offsets = [
-      {0, 0, 0},
       {2 * size + 1, -size, -(size + 1)},
       {size + 1, -(2 * size + 1), size},
       {-size, -(size + 1), 2 * size + 1},
@@ -10,9 +24,22 @@ defmodule Game.RegionMap do
       {size, size + 1, -(2 * size + 1)}
     ]
 
-    Enum.reduce(neighbors_offsets, %{}, fn ({x2, y2, z2}, neighbors) ->
-      coordinates = {x + x2, y + y2, z + z2}
-      Map.put(neighbors, coordinates, %{ x: x + x2, y: y + y2, z: z + z2, state: "waiting"})
+    Enum.map(neighbors_offsets, fn {x2, y2, z2} ->
+      result = %Region{}
+      |> Region.changeset(%{
+        x: region.x + x2,
+        y: region.y + y2,
+        z: region.z + z2,
+        state: "waiting",
+        world_id: world.id
+      })
+      |> Repo.insert
+
+      case result do
+        {:ok, region} -> region
+        {:error, _} -> nil
+      end
     end)
+    |> Enum.filter(fn region -> region end)
   end
 end

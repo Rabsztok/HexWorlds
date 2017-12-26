@@ -1,6 +1,10 @@
 defmodule Game.Region do
   use Game, :model
 
+  @size 50
+
+  def size, do: @size
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   @derive {Phoenix.Param, key: :id}
@@ -21,8 +25,8 @@ defmodule Game.Region do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:x, :y, :z])
+    |> cast(params, [:world_id, :x, :y, :z])
     |> unique_constraint(:coordinates, name: :region_coordinates_index)
-    |> validate_required([:x, :y, :z])
+    |> validate_required([:world_id, :x, :y, :z])
   end
 end

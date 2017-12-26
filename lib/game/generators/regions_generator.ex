@@ -1,35 +1,40 @@
 defmodule Game.RegionsGenerator do
   alias Game.Repo
   alias Game.Region
+  import Ecto.Query
   import Logger
 
-  defp save(regions) do
-    {size, regions} = Repo.insert_all(
-      Region,
-      regions,
-      on_conflict: :nothing,
-      returning: true
-    )
+  defp process_region(region) do
+    Repo.update!(Ecto.Changeset.change(region, state: "processing"))
 
-    regions
+    Game.TileGenerator.call(region)
+
+    Repo.update!(Ecto.Changeset.change(region, state: "ready"))
+
+    region
+  end
+
+  def expand(world) do
+    regions = Repo.all(from region in Region, where: region.world_id == ^(world.id))
+    neighbors = Enum.reduce(regions, [], fn region, neighbors ->
+      neighbors ++ Game.RegionMap.generate_neighbors(world, region)
+    end)
+
+    odd_neighbors = Enum.take_every(neighbors, 2)
+    even_neighbors = neighbors -- odd_neighbors
+
+    Enum.map(odd_neighbors, fn region -> Task.async(fn -> process_region(region) end) end)
+    |> Task.yield_many(50000)
+
+    Enum.map(even_neighbors, fn region -> Task.async(fn -> process_region(region) end) end)
+    |> Task.yield_many(50000)
   end
 
   def call(world, size) do
-    regions = Game.RegionMap.generate(size, {0,0,0})
-    |> Enum.map(fn {coordinates, region} -> Map.put(region, :world_id, world.id) end)
-    |> save()
+    {:ok, center} = Repo.insert %Region{ x: 0, y: 0, z: 0, state: "processing", world_id: world.id}
+    Game.TileGenerator.call(center)
+    Repo.update!(Ecto.Changeset.change(center, state: "ready"))
 
-    center_region = Enum.find(regions, fn (region) ->
-      region.x == 0 && region.y == 0 && region.z == 0
-    end)
-    Game.TileGenerator.call(center_region, size)
-
-    Enum.reduce(regions, %{}, fn region, _existing_tiles ->
-      if !(region.x == 0 && region.y == 0 && region.z == 0) do
-        Game.TileGenerator.call(region, size)
-      end
-#      [Task.async(fn -> Game.TileGenerator.call(region, size) end) | acc]
-    end)
-#    |> Enum.map(fn (task) -> Task.await(task, 50000) end)
+    Enum.each(1..size, fn _ -> expand(world) end)
   end
 end

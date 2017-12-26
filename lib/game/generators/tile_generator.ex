@@ -2,6 +2,7 @@ defmodule Game.TileGenerator do
   import Ecto.Query
   alias Game.Repo
   alias Game.Tile
+  alias Game.Region
   import Logger
 
   defp calculate_height({coordinates, tile}, calculated_tiles, neighbors, remaining_tiles, boundary_tiles) when map_size(neighbors) > 0  do
@@ -9,14 +10,13 @@ defmodule Game.TileGenerator do
     calculated_neighbors = Game.TileMap.neighbors(calculated_and_boundary_tiles, coordinates)
 
     calculated_neighbors_height = Enum.reduce(calculated_neighbors, 0, fn ({_, neighbor}, sum) ->
-      Logger.debug("height: #{Map.get(neighbor, :height, 0)}")
-      sum + Map.get(neighbor, :height, 0)
+      sum + (Map.get(neighbor, :height, 0) || 0)
     end)
 
     height = if map_size(calculated_neighbors) > 0 do
       round(calculated_neighbors_height / map_size(calculated_neighbors)) + :rand.uniform(5) - 3
     else
-      10
+      1
     end
 
     tile = Map.put(tile, :height, height)
@@ -52,7 +52,6 @@ defmodule Game.TileGenerator do
         end
       end
     )
-    Logger.debug(map_size(neighbors))
 
     remaining_tiles = Map.drop(tiles, Map.keys(neighbors))
     {next_coordinates, next_tile} = Enum.random(neighbors)
@@ -62,21 +61,21 @@ defmodule Game.TileGenerator do
   end
 
   defp save(tiles) do
+
     Repo.insert_all(
       Tile,
-      tiles,
-      on_conflict: :nothing
+      tiles
     )
   end
 
-  def call(region, size) do
+  def call(region) do
     center = {region.x, region.y, region.z}
-    tiles = Game.TileMap.generate(size, center)
-#    {start, _} = Enum.min_by(tiles, fn ({{x,y,z}, _}) -> (abs(x) + abs(y) + abs(z)) / 2 end)
+    tiles = Game.TileMap.generate(center)
+
     if center == {0,0,0} do
       tiles = calculate_height(tiles)
     else
-      boundary_tiles = Tile.Queries.within_range(region.world_id, %{x: region.x, y: region.y, z: region.z}, size + 1)
+      boundary_tiles = Tile.Queries.within_range(region.world_id, %{x: region.x, y: region.y, z: region.z}, Region.size + 1)
       boundary_tiles = Enum.reduce(boundary_tiles, %{}, fn (tile, acc) ->
         Map.put(acc, {tile.x, tile.y, tile.z}, %{x: tile.x, y: tile.y, z: tile.z, height: tile.height})
       end)
@@ -90,6 +89,6 @@ defmodule Game.TileGenerator do
 
     Enum.each(chunked_tiles, fn (chunk) -> save(chunk) end)
 
-    tiles
+    region
   end
 end

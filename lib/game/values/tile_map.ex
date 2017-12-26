@@ -1,21 +1,21 @@
 defmodule Game.TileMap do
   import Logger
+  alias Game.Region
 
-  #  ToDo: Limit tiles to hexagon by limiting `y`
-
-  defp generate(size, {x,y,z}, dx, dy) do
+  defp generate({x,y,z}, dx, dy) do
+    size = Region.size
     tile = %{ x: x + dx, y: y + dy, z: z -(dx + dy) }
 
     cond do
       dy < min(size, size - dx) ->
         Map.put(
-          generate(size, {x,y,z}, dx, dy + 1),
+          generate({x,y,z}, dx, dy + 1),
           {tile.x, tile.y, tile.z},
           tile
         )
       dx < size ->
         Map.put(
-          generate(size, {x,y,z}, dx + 1, max(-size, -size - (dx + 1))),
+          generate({x,y,z}, dx + 1, max(-size, -size - (dx + 1))),
           {tile.x, tile.y, tile.z},
           tile
         )
@@ -28,8 +28,9 @@ defmodule Game.TileMap do
     end
   end
 
-  def generate(size, {x,y,z}) do
-    generate(size, {x,y,z}, -size, max(-size, 0))
+  def generate({x,y,z}) do
+    size = Region.size
+    generate({x,y,z}, -size, max(-size, 0))
   end
 
   def neighbors(tile_map, {x,y,z}) do
