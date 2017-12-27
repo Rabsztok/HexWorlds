@@ -2,17 +2,6 @@ defmodule Game.RegionMap do
   alias Game.Region
   alias Game.Repo
 
-  defp save(regions) do
-    {size, regions} = Repo.insert_all(
-      Region,
-      regions,
-      on_conflict: :nothing,
-      returning: true
-    )
-
-    regions
-  end
-
   def generate_neighbors(world, region) do
     size = Region.size
     neighbors_offsets = [

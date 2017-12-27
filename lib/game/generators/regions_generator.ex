@@ -2,7 +2,6 @@ defmodule Game.RegionsGenerator do
   alias Game.Repo
   alias Game.Region
   import Ecto.Query
-  import Logger
 
   defp process_region(region) do
     Repo.update!(Ecto.Changeset.change(region, state: "processing"))

@@ -12,11 +12,11 @@ defmodule Game.WorldGenerator do
       select: count(tile.id)
     )
 
-    Logger.info "Generating forests for #{world.id}"
-    Game.ForestsGenerator.call(world, div(tiles_count, 500))
-
     Logger.info "Generating mountains for #{world.id}"
-    Game.MountainsGenerator.call(world, div(tiles_count, 2000))
+    Game.MountainsGenerator.call(world.id, div(tiles_count, 6000))
+
+    Logger.info "Generating forests for #{world.id}"
+    Game.ForestsGenerator.call(world.id, div(tiles_count, 1000))
 
     Logger.info "Generating water for #{world.id}"
     Game.WaterGenerator.call(world, 1)

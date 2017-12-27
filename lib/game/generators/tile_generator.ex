@@ -1,9 +1,7 @@
 defmodule Game.TileGenerator do
-  import Ecto.Query
   alias Game.Repo
   alias Game.Tile
   alias Game.Region
-  import Logger
 
   defp calculate_height({coordinates, tile}, calculated_tiles, neighbors, remaining_tiles, boundary_tiles) when map_size(neighbors) > 0  do
     calculated_and_boundary_tiles = Map.merge(boundary_tiles, calculated_tiles)
@@ -14,9 +12,9 @@ defmodule Game.TileGenerator do
     end)
 
     height = if map_size(calculated_neighbors) > 0 do
-      round(calculated_neighbors_height / map_size(calculated_neighbors)) + :rand.uniform(5) - 3
+      round(calculated_neighbors_height / map_size(calculated_neighbors) + (:math.sqrt(:rand.uniform * 16)) * (:rand.uniform - 0.5))
     else
-      1
+      :rand.uniform(10) - 5
     end
 
     tile = Map.put(tile, :height, height)
@@ -72,15 +70,16 @@ defmodule Game.TileGenerator do
     center = {region.x, region.y, region.z}
     tiles = Game.TileMap.generate(center)
 
-    if center == {0,0,0} do
-      tiles = calculate_height(tiles)
+    tiles = if center == {0,0,0} do
+      calculate_height(tiles)
     else
-      boundary_tiles = Tile.Queries.within_range(region.world_id, %{x: region.x, y: region.y, z: region.z}, Region.size + 1)
+      boundary_tiles = Tile.Queries.within_range(region.world_id, center, Region.size + 1)
       boundary_tiles = Enum.reduce(boundary_tiles, %{}, fn (tile, acc) ->
         Map.put(acc, {tile.x, tile.y, tile.z}, %{x: tile.x, y: tile.y, z: tile.z, height: tile.height})
       end)
-      tiles = calculate_height(tiles, boundary_tiles)
+      calculate_height(tiles, boundary_tiles)
     end
+
     tile_values = Map.values(tiles)
     tile_values = Enum.map(tile_values, fn (tile) -> Map.put(tile, :terrain, %{ type: "dirt" }) end)
     tile_values = Enum.map(tile_values, fn (tile) -> Map.put(tile, :region_id, region.id) end)
