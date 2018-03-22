@@ -9,5 +9,6 @@ defmodule GameWeb.Router do
     pipe_through :api
 
     resources "/worlds", WorldController, except: [:update]
+    resources "/tiles", TileController, only: [:index]
   end
 end
