@@ -12,8 +12,13 @@ defmodule GameWeb.TileChannel do
 
   def handle_in("move", %{"world_id" => world_id, "coordinates" => coordinates, "range" => range}, socket) do
     coordinates = Map.new(coordinates, fn {k, v} -> {String.to_atom(k), v} end)
-    tiles = Tile.Queries.within_range(world_id, { coordinates.x, coordinates.y, coordinates.z }, range)
-    broadcast! socket, "move", %{tiles: tiles}
+
+    Tile.Queries.within_range(world_id, { coordinates.x, coordinates.y, coordinates.z }, range)
+    |> Enum.chunk_every(2000)
+    |> Enum.each(fn (chunk) ->
+      push socket, "move", %{tiles: chunk}
+    end)
+
     {:noreply, socket}
   end
 end

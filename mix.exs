@@ -19,7 +19,7 @@ defmodule Game.Mixfile do
   def application do
     [mod: {Game, []},
      applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex]]
+                    :phoenix_ecto, :postgrex, :scrivener_ecto]]
   end
 
   # Specifies which paths to compile per environment.
@@ -40,6 +40,7 @@ defmodule Game.Mixfile do
       {:cowboy, "~> 1.0"},
       {:ecto_enum, "~> 1.0"},
       {:cors_plug, "~> 1.2"},
+      {:scrivener_ecto, "~> 1.0"}
     ]
   end
 
