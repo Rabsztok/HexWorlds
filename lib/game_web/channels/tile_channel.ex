@@ -9,7 +9,6 @@ defmodule GameWeb.TileChannel do
     {:ok, %{tiles: tiles}, socket}
   end
 
-
   def handle_in("move", %{"world_id" => world_id, "coordinates" => coordinates, "range" => range}, socket) do
     coordinates = Map.new(coordinates, fn {k, v} -> {String.to_atom(k), v} end)
 

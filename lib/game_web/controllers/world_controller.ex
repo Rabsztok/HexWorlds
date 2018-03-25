@@ -21,6 +21,7 @@ defmodule GameWeb.WorldController do
       {:ok, world} ->
         Task.start_link(fn -> Game.WorldGenerator.call(world, generation_size) end)
 
+        Endpoint.broadcast("worlds:lobby", "add", %{world: world})
         render(conn, "show.json", world: world)
       {:error, changeset} ->
         render(conn, "error.json", changeset: changeset)
@@ -46,6 +47,7 @@ defmodule GameWeb.WorldController do
 
     Repo.delete!(world)
 
+    Endpoint.broadcast("worlds:lobby", "remove", %{world: world})
     render(conn, "show.json", world: world)
   end
 end

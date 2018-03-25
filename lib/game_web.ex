@@ -21,6 +21,8 @@ defmodule GameWeb do
       use Phoenix.Controller, namespace: GameWeb
 
       alias Game.Repo
+      alias GameWeb.Endpoint
+
       import Ecto
       import Ecto.Query
 
@@ -43,9 +45,12 @@ defmodule GameWeb do
       use Phoenix.Channel
 
       alias Game.Repo
+      alias GameWeb.Endpoint
+
       import Ecto
       import Ecto.Query
       import GameWeb.Gettext
+      import GameWeb.ChannelHelpers
     end
   end
 

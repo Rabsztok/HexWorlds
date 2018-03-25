@@ -1,7 +1,5 @@
-require IEx
-
 defmodule GameWeb.WorldChannel do
-  use Phoenix.Channel
+  use GameWeb, :channel
 
   alias Game.Repo
   alias Game.World
@@ -11,26 +9,28 @@ defmodule GameWeb.WorldChannel do
     {:ok, %{worlds: worlds}, socket}
   end
 
-  def join("world:" <> _world_id, _params, _socket) do
-    IEx.pry
-    {:error, %{reason: "unauthorized"}}
+  def handle_in("create", %{"world" => world, "size" => size}, socket) do
+    changeset = World.changeset(%World{}, world)
+    {generation_size, _} = Integer.parse(size)
+
+    case Repo.insert(changeset) do
+      {:ok, world} ->
+        Task.start_link(fn -> Game.WorldGenerator.call(world, generation_size) end)
+
+        Endpoint.broadcast("worlds:lobby", "add", %{world: world})
+        {:reply, {:success, world}, socket}
+      {:error, changeset} ->
+        errors = Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
+        {:reply, {:error, errors}, socket}
+    end
   end
 
-#  def handle_info({:after_join, _message}, socket) do
-#    player_id = socket.assigns.player_id
-#    player = %{id: player_id}
-#    player = GameState.put_player(player)
-#    broadcast! socket, "player:joined", %{player: player}
-#    {:noreply, socket}
-#  end
+  def handle_in("delete", %{"id" => id}, socket) do
+    world = Repo.get!(World, id)
 
-#  def handle_in("move", %{"coordinates" => coordinates}, socket) do
-#    broadcast! socket, "move", %{coordinates: coordinates}
-#    {:noreply, socket}
-#  end
-#
-#  def handle_out("move", payload, socket) do
-#    push socket, "move", payload
-#    {:noreply, socket}
-#  end
+    Repo.delete!(world)
+
+    Endpoint.broadcast("worlds:lobby", "remove", %{world: world})
+    {:reply, {:success, world}, socket}
+  end
 end
