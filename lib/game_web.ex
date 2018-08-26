@@ -16,30 +16,6 @@ defmodule GameWeb do
   below.
   """
 
-  def controller do
-    quote do
-      use Phoenix.Controller, namespace: GameWeb
-
-      alias Game.Repo
-      alias GameWeb.Endpoint
-
-      import Ecto
-      import Ecto.Query
-
-      import GameWeb.Router.Helpers
-      import GameWeb.Gettext
-    end
-  end
-
-  def view do
-  end
-
-  def router do
-    quote do
-      use Phoenix.Router
-    end
-  end
-
   def channel do
     quote do
       use Phoenix.Channel

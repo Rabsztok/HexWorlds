@@ -3,10 +3,13 @@ defmodule Game.ForestsGenerator do
   alias Game.Repo
   alias Game.Tile
   import TileUtils
+  import Queries
+
 
   def call(world_id, amount) do
     Repo.all(
-      from tile in Tile,
+      from [tile, region] in tileWithRegion(),
+      where: region.state == "empty",
       where: tile.world_id == ^world_id,
       where: tile.height >= 5,
       where: fragment("?->>'type' = ?", tile.terrain, ^"dirt"),

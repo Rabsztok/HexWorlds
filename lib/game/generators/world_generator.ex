@@ -1,13 +1,12 @@
 defmodule Game.WorldGenerator do
   require Logger
   import Ecto.Query
+  import Queries
 
-  def call(world, size) do
-    Logger.info "Generating landmass for #{world.id}"
-    Game.RegionsGenerator.call(world, size)
-
+  defp build_content(world) do
     tiles_count = Game.Repo.one(
-      from tile in Game.Tile,
+      from [tile, region] in tileWithRegion(),
+      where: region.state == "empty",
       where: tile.world_id == ^world.id,
       select: count(tile.id)
     )
@@ -21,6 +20,18 @@ defmodule Game.WorldGenerator do
     Logger.info "Generating water for #{world.id}"
     Game.WaterGenerator.call(world, 1)
 
-    Logger.info "World #{world.id} with #{tiles_count} tiles is ready!"
+    Game.RegionsGenerator.complete(world)
+  end
+
+  def create(world) do
+    Game.RegionsGenerator.create(world)
+
+    build_content(world)
+  end
+
+  def expand(world) do
+    Game.RegionsGenerator.expand(world)
+
+    build_content(world)
   end
 end

@@ -5,18 +5,22 @@ defmodule GameWeb.WorldChannel do
   alias Game.World
 
   def join("worlds:lobby", _message, socket) do
-    worlds = Repo.all(World)
+    worlds = World
+             |> Repo.all()
+             |> Repo.preload(:regions)
     {:ok, %{worlds: worlds}, socket}
   end
 
-  def handle_in("create", %{"world" => world, "size" => size}, socket) do
-    changeset = World.changeset(%World{}, world)
-    {generation_size, _} = Integer.parse(size)
+  def handle_in("create", %{"world" => world}, socket) do
+    changeset = World.changeset(%World{size: 1}, world)
 
     case Repo.insert(changeset) do
       {:ok, world} ->
-        Task.start_link(fn -> Game.WorldGenerator.call(world, generation_size) end)
+        Task.start_link(fn -> Game.WorldGenerator.create(world) end)
 
+        world = World
+                |> Repo.get!(world.id)
+                |> Repo.preload(:regions)
         Endpoint.broadcast("worlds:lobby", "add", %{world: world})
         {:reply, {:success, world}, socket}
       {:error, changeset} ->
@@ -25,8 +29,20 @@ defmodule GameWeb.WorldChannel do
     end
   end
 
+  def handle_in("expand", %{"id" => id}, socket) do
+    world = World
+            |> Repo.get!(id)
+            |> Repo.preload(:regions)
+
+    Task.start_link(fn -> Game.WorldGenerator.expand(world) end)
+
+    {:reply, {:success, world}, socket}
+  end
+
   def handle_in("delete", %{"id" => id}, socket) do
-    world = Repo.get!(World, id)
+    world = World
+            |> Repo.get!(id)
+            |> Repo.preload(:regions)
 
     Repo.delete!(world)
 

@@ -29,4 +29,13 @@ defmodule Game.Region do
     |> unique_constraint(:coordinates, name: :region_coordinates_index)
     |> validate_required([:world_id, :x, :y, :z])
   end
+
+  def set_state(region, state) do
+    Game.Repo.update!(Ecto.Changeset.change(region, state: state))
+
+    world = Game.World
+            |> Game.Repo.get!(region.world_id)
+            |> Game.Repo.preload(:regions)
+    GameWeb.Endpoint.broadcast("worlds:lobby", "update", %{world: world})
+  end
 end
