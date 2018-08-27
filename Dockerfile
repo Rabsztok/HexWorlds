@@ -1,9 +1,25 @@
-FROM marcelocg/phoenix
+#FROM marcelocg/phoenix
+#
+#ADD . /app
+#WORKDIR /app
+#
+#RUN mix local.hex --force
+#RUN mix local.rebar --force
+#RUN mix deps.get
+#RUN mix compile
+#
+FROM bitwalker/alpine-elixir-phoenix:latest
 
-ADD . /app
-WORKDIR /app
+# Set exposed ports
+EXPOSE 4000
+ENV PORT=4000 MIX_ENV=dev
 
-RUN mix local.hex --force
-RUN mix local.rebar --force
-RUN mix deps.get
-RUN mix compile
+# Cache elixir deps
+ADD mix.exs mix.lock ./
+RUN mix do deps.get, deps.compile
+
+ADD . .
+
+RUN mix do compile
+
+USER default

@@ -3,7 +3,7 @@ defmodule Game.Mixfile do
 
   def project do
     [app: :game,
-     version: "0.0.1",
+     version: "0.0.2",
      elixir: "~> 1.2",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
@@ -40,7 +40,9 @@ defmodule Game.Mixfile do
       {:cowboy, "~> 1.0"},
       {:ecto_enum, "~> 1.0"},
       {:cors_plug, "~> 1.2"},
-      {:scrivener_ecto, "~> 1.0"}
+      {:scrivener_ecto, "~> 1.0"},
+      {:edeliver, "~> 1.6.0"},
+      {:distillery, "~> 2.0.0"}
     ]
   end
 
@@ -53,6 +55,6 @@ defmodule Game.Mixfile do
   defp aliases do
     ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
      "ecto.reset": ["ecto.drop", "ecto.setup"],
-     "test": ["ecto.create --quiet", "ecto.migrate", "test"]]
+     test: ["ecto.create --quiet", "ecto.migrate", "test"]]
   end
 end

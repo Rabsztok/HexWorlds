@@ -59,7 +59,6 @@ defmodule Game.TileGenerator do
   end
 
   defp save(tiles) do
-
     Repo.insert_all(
       Tile,
       tiles
