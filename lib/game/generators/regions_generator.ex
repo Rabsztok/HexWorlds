@@ -16,7 +16,11 @@ defmodule Game.RegionsGenerator do
   # generate new regions around current boundaries of the map, build a heightmap of them and mark them as new world edge.
   # existing regions are marked as "empty" - they are ready to be populated from now on.
   def expand(world) do
-    regions = Repo.all(from region in Region, where: region.world_id == ^(world.id))
+    regions = Repo.all(
+      from region in Region,
+      where: region.state == "edge",
+      where: region.world_id == ^(world.id)
+    )
     neighbors = Enum.reduce(regions, [], fn region, neighbors ->
       neighbors ++ Game.RegionMap.generate_neighbors(world, region)
     end)
