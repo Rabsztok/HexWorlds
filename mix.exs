@@ -2,29 +2,41 @@ defmodule Game.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :game,
-     version: "0.0.2",
-     elixir: "~> 1.2",
-     elixirc_paths: elixirc_paths(Mix.env),
-     compilers: [:phoenix, :gettext] ++ Mix.compilers,
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     aliases: aliases(),
-     deps: deps()]
+    [
+      app: :game,
+      version: "0.0.2",
+      elixir: "~> 1.2",
+      elixirc_paths: elixirc_paths(Mix.env()),
+      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      aliases: aliases(),
+      deps: deps()
+    ]
   end
 
   # Configuration for the OTP application.
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {Game, []},
-     applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :scrivener_ecto]]
+    [
+      mod: {Game, []},
+      applications: [
+        :phoenix,
+        :phoenix_pubsub,
+        :cowboy,
+        :logger,
+        :gettext,
+        :phoenix_ecto,
+        :postgrex,
+        :scrivener_ecto
+      ]
+    ]
   end
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
   #
@@ -51,8 +63,10 @@ defmodule Game.Mixfile do
   #
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
-    ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-     "ecto.reset": ["ecto.drop", "ecto.setup"],
-     test: ["ecto.create --quiet", "ecto.migrate", "test"]]
+    [
+      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+    ]
   end
 end

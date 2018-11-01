@@ -6,28 +6,29 @@ defmodule TileUtils do
 
     processed_tiles = [tile | processed_tiles]
 
-    edges = if response == :ok do
-      Map.values(Game.TileMap.neighbors(remaining_tiles, coordinates)) ++ edges
-    else
-      edges
-    end
+    edges =
+      if response == :ok do
+        Map.values(Game.TileMap.neighbors(remaining_tiles, coordinates)) ++ edges
+      else
+        edges
+      end
 
     if length(edges) > 0 do
       next_tile = Enum.random(edges)
       next_coordinates = coordinates(next_tile)
       remaining_tiles = Map.delete(remaining_tiles, next_coordinates)
-      edges = Enum.reject(edges, fn (edge) -> edge == next_tile end)
+      edges = Enum.reject(edges, fn edge -> edge == next_tile end)
 
       [
-        tile |
-        spread(
-          {next_coordinates, next_tile},
-          processed_tiles,
-          edges,
-          remaining_tiles,
-          size,
-          lambda
-        )
+        tile
+        | spread(
+            {next_coordinates, next_tile},
+            processed_tiles,
+            edges,
+            remaining_tiles,
+            size,
+            lambda
+          )
       ]
     else
       %{}
@@ -39,8 +40,9 @@ defmodule TileUtils do
   """
   def spread(tiles, center, size, lambda) do
     # We use size as a range, because we should get ~PI*size^2 tiles from it, which is more than enough.
-    tile_map = tiles
-    |> map_tiles
+    tile_map =
+      tiles
+      |> map_tiles
 
     # take and delete starting (center) tile
     center_tile = Map.get(tile_map, center)

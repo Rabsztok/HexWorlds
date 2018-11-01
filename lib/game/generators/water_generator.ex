@@ -11,10 +11,10 @@ defmodule Game.WaterGenerator do
   def create_sea(world, sea_level) do
     from(
       tile in Tile,
-      where: tile.world_id == ^(world.id),
+      where: tile.world_id == ^world.id,
       where: tile.height <= ^sea_level,
       update: [
-        set: [terrain: ^(%{type: "water"})]
+        set: [terrain: ^%{type: "water"}]
       ]
     )
     |> Repo.update_all([])
@@ -23,10 +23,10 @@ defmodule Game.WaterGenerator do
   def create_beach(world, beach_level) do
     from(
       tile in Tile,
-      where: tile.world_id == ^(world.id),
+      where: tile.world_id == ^world.id,
       where: tile.height == ^beach_level,
       update: [
-        set: [terrain: ^(%{type: "sand"})]
+        set: [terrain: ^%{type: "sand"}]
       ]
     )
     |> Repo.update_all([])

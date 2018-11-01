@@ -5,9 +5,11 @@ defmodule GameWeb.WorldChannel do
   alias Game.World
 
   def join("worlds:lobby", _message, socket) do
-    worlds = World
-             |> Repo.all()
-             |> Repo.preload(:regions)
+    worlds =
+      World
+      |> Repo.all()
+      |> Repo.preload(:regions)
+
     {:ok, %{worlds: worlds}, socket}
   end
 
@@ -18,11 +20,14 @@ defmodule GameWeb.WorldChannel do
       {:ok, world} ->
         Task.start_link(fn -> Game.WorldGenerator.create(world) end)
 
-        world = World
-                |> Repo.get!(world.id)
-                |> Repo.preload(:regions)
+        world =
+          World
+          |> Repo.get!(world.id)
+          |> Repo.preload(:regions)
+
         Endpoint.broadcast("worlds:lobby", "add", %{world: world})
         {:reply, {:success, world}, socket}
+
       {:error, changeset} ->
         errors = Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
         {:reply, {:error, errors}, socket}
@@ -30,9 +35,10 @@ defmodule GameWeb.WorldChannel do
   end
 
   def handle_in("expand", %{"id" => id}, socket) do
-    world = World
-            |> Repo.get!(id)
-            |> Repo.preload(:regions)
+    world =
+      World
+      |> Repo.get!(id)
+      |> Repo.preload(:regions)
 
     Task.start_link(fn -> Game.WorldGenerator.expand(world) end)
 
@@ -40,9 +46,10 @@ defmodule GameWeb.WorldChannel do
   end
 
   def handle_in("delete", %{"id" => id}, socket) do
-    world = World
-            |> Repo.get!(id)
-            |> Repo.preload(:regions)
+    world =
+      World
+      |> Repo.get!(id)
+      |> Repo.preload(:regions)
 
     Repo.delete!(world)
 

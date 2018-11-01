@@ -16,14 +16,18 @@ defmodule Game.RegionsGenerator do
   # generate new regions around current boundaries of the map, build a heightmap of them and mark them as new world edge.
   # existing regions are marked as "empty" - they are ready to be populated from now on.
   def expand(world) do
-    regions = Repo.all(
-      from region in Region,
-      where: region.state == "edge",
-      where: region.world_id == ^(world.id)
-    )
-    neighbors = Enum.reduce(regions, [], fn region, neighbors ->
-      neighbors ++ Game.RegionMap.generate_neighbors(world, region)
-    end)
+    regions =
+      Repo.all(
+        from(region in Region,
+          where: region.state == "edge",
+          where: region.world_id == ^world.id
+        )
+      )
+
+    neighbors =
+      Enum.reduce(regions, [], fn region, neighbors ->
+        neighbors ++ Game.RegionMap.generate_neighbors(world, region)
+      end)
 
     Repo.update!(Ecto.Changeset.change(world, size: world.size + 1))
 
@@ -41,7 +45,7 @@ defmodule Game.RegionsGenerator do
 
   # create central region and expand it once initially
   def create(world) do
-    center = Repo.insert! %Region{ x: 0, y: 0, z: 0, state: "initial", world_id: world.id}
+    center = Repo.insert!(%Region{x: 0, y: 0, z: 0, state: "initial", world_id: world.id})
     process_edge(center)
 
     Enum.each(1..1, fn _ -> expand(world) end)
@@ -52,9 +56,9 @@ defmodule Game.RegionsGenerator do
     from(
       region in Region,
       where: region.state == "empty",
-      where: region.world_id == ^(world.id)
+      where: region.world_id == ^world.id
     )
-    |> Repo.all
+    |> Repo.all()
     |> Enum.each(fn region -> Region.set_state(region, "ready") end)
   end
 end

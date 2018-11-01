@@ -4,8 +4,9 @@ defmodule Queries do
   import Ecto.Query
 
   def tileWithRegion do
-    from tile in Tile,
-         join: region in Region,
-         where: tile.region_id == region.id
+    from(tile in Tile,
+      join: region in Region,
+      where: tile.region_id == region.id
+    )
   end
 end
