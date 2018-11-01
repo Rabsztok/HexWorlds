@@ -1,5 +1,4 @@
 defmodule Game.TileMap do
-  import Logger
   alias Game.Region
 
   defp generate({x,y,z}, dx, dy) do

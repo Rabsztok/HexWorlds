@@ -3,7 +3,7 @@ defmodule Game.WorldTest do
 
   alias Game.World
 
-  @valid_attrs %{name: "some content"}
+  @valid_attrs %{name: "World", size: 1}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

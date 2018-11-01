@@ -1,8 +1,6 @@
 defmodule Game.Tile do
   use Game, :model
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
   @derive {Phoenix.Param, key: :id}
   @derive {Poison.Encoder, only: [:id, :x, :y, :z, :height, :terrain]}
 
@@ -13,8 +11,8 @@ defmodule Game.Tile do
     field :height, :integer
     field :terrain, :map
 
-    belongs_to :region, Game.Region
-    belongs_to :world, Game.World
+    belongs_to :region, Game.Region, type: :binary_id
+    belongs_to :world, Game.World, type: :binary_id
   end
 
   @doc """

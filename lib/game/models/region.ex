@@ -5,8 +5,6 @@ defmodule Game.Region do
 
   def size, do: @size
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
   @derive {Phoenix.Param, key: :id}
   @derive {Poison.Encoder, only: [:id, :x, :y, :z, :state]}
 
@@ -17,7 +15,7 @@ defmodule Game.Region do
     field :state, :string
 
     has_many :tiles, Game.Tile, on_delete: :nothing
-    belongs_to :world, Game.World
+    belongs_to :world, Game.World, type: :binary_id
   end
 
   @doc """
