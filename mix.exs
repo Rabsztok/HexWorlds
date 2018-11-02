@@ -52,7 +52,9 @@ defmodule Game.Mixfile do
       {:plug_cowboy, "~> 1.0"},
       {:ecto_enum, "~> 1.0"},
       {:cors_plug, "~> 1.2"},
-      {:scrivener_ecto, "~> 1.0"}
+      {:scrivener_ecto, "~> 1.0"},
+      {:distillery, "~> 2.0"},
+      {:edeliver, ">= 1.6.0"}
     ]
   end
 

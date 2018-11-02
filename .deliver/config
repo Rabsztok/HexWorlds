@@ -1,0 +1,22 @@
+APP="game"
+
+BUILD_HOST="build.hex-worlds.untitledkingdom.com"
+BUILD_USER="app"
+BUILD_AT="/tmp/edeliver/hex-worlds/app"
+
+PRODUCTION_HOSTS="hex-worlds.untitledkingdom.com"
+PRODUCTION_USER="app"
+DELIVER_TO="/home/app/applications/hex-worlds/app"
+
+STAGING_HOSTS="staging.hex-worlds.untitledkingdom.com"
+STAGING_USER="app"
+TEST_AT="/home/app/applications/hex-worlds-staging/app"
+
+pre_erlang_get_and_update_deps() {
+  local _prod_secret_path="/home/app/applications/hex-worlds/prod.secret.exs"
+  if [ "$TARGET_MIX_ENV" = "prod" ]; then
+    __sync_remote "
+      ln -sfn '$_prod_secret_path' '$BUILD_AT/config/prod.secret.exs'
+    "
+  fi
+}
