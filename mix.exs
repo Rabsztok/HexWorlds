@@ -49,7 +49,7 @@ defmodule Game.Mixfile do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
-      {:plug_cowboy, "~> 1.0"},
+      {:cowboy, "~> 1.0"},
       {:ecto_enum, "~> 1.0"},
       {:cors_plug, "~> 1.2"},
       {:scrivener_ecto, "~> 1.0"},
