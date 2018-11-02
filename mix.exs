@@ -24,7 +24,7 @@ defmodule Game.Mixfile do
       applications: [
         :phoenix,
         :phoenix_pubsub,
-        :cowboy,
+        :plug_cowboy,
         :logger,
         :gettext,
         :phoenix_ecto,
