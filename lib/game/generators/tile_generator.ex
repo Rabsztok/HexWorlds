@@ -119,13 +119,14 @@ defmodule Game.TileGenerator do
         calculate_height(tiles, boundary_tiles)
       end
 
-    tile_values = Map.values(tiles)
-    tile_values = Enum.map(tile_values, fn tile -> Map.put(tile, :terrain, %{type: "dirt"}) end)
-    tile_values = Enum.map(tile_values, fn tile -> Map.put(tile, :region_id, region.id) end)
-    tile_values = Enum.map(tile_values, fn tile -> Map.put(tile, :world_id, region.world_id) end)
-    chunked_tiles = Enum.chunk_every(tile_values, 5000)
-
-    Enum.each(chunked_tiles, fn chunk -> save(chunk) end)
+    Map.values(tiles)
+    |> Enum.map(fn tile ->
+      Map.put(tile, :terrain, %{type: "dirt"})
+      Map.put(tile, :region_id, region.id)
+      Map.put(tile, :world_id, region.world_id)
+    end)
+    |> Enum.chunk_every(5000)
+    |> Enum.each(fn chunk -> save(chunk) end)
 
     region
   end

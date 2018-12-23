@@ -35,10 +35,10 @@ defmodule Game.RegionsGenerator do
     even_neighbors = neighbors -- odd_neighbors
 
     Enum.map(odd_neighbors, fn region -> Task.async(fn -> process_edge(region) end) end)
-    |> Task.yield_many(50000)
+    |> Task.yield_many(:infinity)
 
     Enum.map(even_neighbors, fn region -> Task.async(fn -> process_edge(region) end) end)
-    |> Task.yield_many(50000)
+    |> Task.yield_many(:infinity)
 
     Enum.each(regions, fn region -> Region.set_state(region, "empty") end)
   end

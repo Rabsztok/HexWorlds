@@ -1,6 +1,4 @@
 defmodule TileUtils do
-  require IEx
-
   defp spread({coordinates, tile}, processed_tiles, edges, remaining_tiles, size, lambda) do
     {response, tile} = lambda.(tile, processed_tiles, size)
 
