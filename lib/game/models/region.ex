@@ -24,9 +24,9 @@ defmodule Game.Region do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:world_id, :x, :y, :z])
+    |> cast(params, [:world_id, :x, :y, :z, :state])
     |> unique_constraint(:coordinates, name: :region_coordinates_index)
-    |> validate_required([:world_id, :x, :y, :z])
+    |> validate_required([:world_id, :x, :y, :z, :state])
   end
 
   def set_state(region, state) do

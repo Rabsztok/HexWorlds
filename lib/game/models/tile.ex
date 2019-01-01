@@ -15,6 +15,7 @@ defmodule Game.Tile do
 
     belongs_to(:region, Game.Region, type: :binary_id)
     belongs_to(:world, Game.World, type: :binary_id)
+    has_many(:players, Game.Player, on_delete: :delete_all)
   end
 
   @doc """

@@ -21,7 +21,7 @@ defmodule Game.RegionMap do
           x: region.x + x2,
           y: region.y + y2,
           z: region.z + z2,
-          state: "waiting",
+          state: "initial",
           world_id: world.id
         })
         |> Repo.insert()

@@ -50,20 +50,24 @@ defmodule Game.TileGenerator do
   end
 
   defp calculate_height({coordinates, tile}, calculated_tiles, %{}, %{}, %{}) do
+    calculated_neighbors = Game.TileMap.neighbors(calculated_tiles, coordinates)
+
+    calculated_neighbors_height =
+      Enum.reduce(calculated_neighbors, 0, fn {_, neighbor}, sum ->
+        sum + (Map.get(neighbor, :height, 0) || 0)
+      end)
+
+    tile =
+      Map.put(
+        tile,
+        :height,
+        round(
+          calculated_neighbors_height / map_size(calculated_neighbors) +
+            :math.sqrt(:rand.uniform() * 16) * (:rand.uniform() - 0.5)
+        )
+      )
+
     Map.put(calculated_tiles, coordinates, tile)
-  end
-
-  def calculate_height(tiles) do
-    coordinates = {0, 0, 0}
-    {tile, remaining_tiles} = Map.pop(tiles, coordinates)
-    neighbors = Game.TileMap.neighbors(remaining_tiles, coordinates)
-    remaining_tiles = Map.drop(remaining_tiles, Map.keys(neighbors))
-
-    Map.put(
-      calculate_height({coordinates, tile}, %{}, neighbors, remaining_tiles, %{}),
-      coordinates,
-      tile
-    )
   end
 
   defp calculate_height(tiles, boundary_tiles) do
@@ -86,6 +90,20 @@ defmodule Game.TileGenerator do
       neighbors,
       remaining_tiles,
       boundary_tiles
+    )
+  end
+
+  def calculate_height(tiles) do
+    coordinates = {0, 0, 0}
+    {tile, remaining_tiles} = Map.pop(tiles, coordinates)
+    tile = Map.put(tile, :height, :rand.uniform(10) - 5)
+    neighbors = Game.TileMap.neighbors(remaining_tiles, coordinates)
+    remaining_tiles = Map.drop(remaining_tiles, Map.keys(neighbors))
+
+    Map.put(
+      calculate_height({coordinates, tile}, %{}, neighbors, remaining_tiles, %{}),
+      coordinates,
+      tile
     )
   end
 
@@ -121,9 +139,10 @@ defmodule Game.TileGenerator do
 
     Map.values(tiles)
     |> Enum.map(fn tile ->
-      Map.put(tile, :terrain, %{type: "dirt"})
-      Map.put(tile, :region_id, region.id)
-      Map.put(tile, :world_id, region.world_id)
+      tile
+      |> Map.put(:terrain, %{type: "dirt"})
+      |> Map.put(:region_id, region.id)
+      |> Map.put(:world_id, region.world_id)
     end)
     |> Enum.chunk_every(5000)
     |> Enum.each(fn chunk -> save(chunk) end)

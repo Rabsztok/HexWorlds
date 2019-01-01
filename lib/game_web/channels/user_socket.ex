@@ -5,6 +5,7 @@ defmodule GameWeb.UserSocket do
   channel("worlds:*", GameWeb.WorldChannel)
   channel("world:*", GameWeb.WorldChannel)
   channel("tiles:*", GameWeb.TileChannel)
+  channel("players:*", GameWeb.PlayerChannel)
 
   ## Transports
   transport(:websocket, Phoenix.Transports.WebSocket, timeout: 45_000)

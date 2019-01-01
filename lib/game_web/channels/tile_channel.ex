@@ -2,26 +2,24 @@ defmodule GameWeb.TileChannel do
   use Phoenix.Channel
   require Logger
 
+  import Ecto.Query
   alias Game.Tile
 
-  def join("tiles:lobby", %{"world_id" => world_id}, socket) do
-    tiles = Tile.Queries.within_range(world_id, {0, 0, 0}, 100)
-    {:ok, %{tiles: tiles}, socket}
+  def join("tiles:lobby", %{"region_id" => region_id}, socket) do
+    send(self(), {:after_join, region_id})
+
+    {:ok, %{}, socket}
   end
 
-  def handle_in(
-        "move",
-        %{"world_id" => world_id, "coordinates" => coordinates, "range" => range},
-        socket
-      ) do
-    coordinates = Map.new(coordinates, fn {k, v} -> {String.to_atom(k), v} end)
+  def join("tiles:" <> region_id, _message, socket) do
+    send(self(), {:after_join, region_id})
 
-    Tile.Queries.within_range(world_id, {coordinates.x, coordinates.y, coordinates.z}, range)
-    |> Enum.chunk_every(2000)
-    |> Enum.each(fn chunk ->
-      push(socket, "move", %{tiles: chunk})
-    end)
+    {:ok, %{}, socket}
+  end
 
+  def handle_info({:after_join, region_id}, socket) do
+    tiles = Game.Repo.all(from(tile in Tile, where: tile.region_id == ^region_id))
+    push(socket, "load", %{tiles: tiles})
     {:noreply, socket}
   end
 end

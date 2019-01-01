@@ -8,6 +8,7 @@ defmodule Game.World do
   schema "worlds" do
     field(:name, :string)
     field(:size, :integer)
+    has_many(:players, Game.Player, on_delete: :delete_all)
     has_many(:tiles, Game.Tile, on_delete: :delete_all)
     has_many(:regions, Game.Region, on_delete: :delete_all)
 
