@@ -16,7 +16,8 @@ config :game, GameWeb.Endpoint,
   http: [port: {:system, "PORT"}], # Needed for Phoenix 1.2 and 1.4. Doesn't hurt for 1.3.
   server: true, # Without this line, your app will not start the web server!
   secret_key_base: "${SECRET_KEY_BASE}",
-  url: [host: "${APP_NAME}.gigalixirapp.com", port: 443]
+  url: [host: "${APP_NAME}.gigalixirapp.com", port: 443],
+  check_origin: false
 
 config :game, Game.Repo,
   adapter: Ecto.Adapters.Postgres,
