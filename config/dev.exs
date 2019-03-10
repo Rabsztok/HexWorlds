@@ -21,7 +21,7 @@ config :game, Game.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   database: "postgres",
-  hostname: "game_db_1",
+  hostname: "hexworlds_db_1",
   pool_timeout: 90_000,
   timeout: 90_000,
   pool_size: 10
